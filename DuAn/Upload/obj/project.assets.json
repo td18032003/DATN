@@ -1212,11 +1212,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\VueJS\\Du_An\\DuAn\\Upload\\Upload.csproj",
+      "projectUniqueName": "C:\\VueJS\\Publish\\Du_An\\DuAn\\Upload\\Upload.csproj",
       "projectName": "Upload",
-      "projectPath": "C:\\VueJS\\Du_An\\DuAn\\Upload\\Upload.csproj",
+      "projectPath": "C:\\VueJS\\Publish\\Du_An\\DuAn\\Upload\\Upload.csproj",
       "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-      "outputPath": "C:\\VueJS\\Du_An\\DuAn\\Upload\\obj\\",
+      "outputPath": "C:\\VueJS\\Publish\\Du_An\\DuAn\\Upload\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",

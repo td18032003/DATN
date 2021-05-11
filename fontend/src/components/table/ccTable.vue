@@ -26,12 +26,13 @@
             <DxColumn
                 v-for="(item,index) in listHeader"
                 :key="index"
-                :data-field="item.dataField"
-                :caption="item.caption"
+                :data-field="item.DataField"
+                :caption="item.Caption"
                 :width="item.width"
-                :min-width="item.minWidth"
-                :fixed="item.fixed ? item.fixed : false"
+                :min-width="item.MinWidth"
+                :fixed="item.Fixed ? item.Fixed : false"
                 cell-template="cell-template"
+                :alignment="item.Alignment ? item.Alignment : 'center'"
             />
             <DxColumn
                 width="50"
