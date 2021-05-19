@@ -26,6 +26,8 @@ const ccSelectBox = () => import(/* webpackChunkName:'ccSelectBox' */ '@/compone
 Vue.component('ccSelectBox', ccSelectBox);
 const ccOrganizationUnit = () => import(/* webpackChunkName:'ccOrganizationUnit' */ '@/components/organization-unit/CCOrganizationUnit.vue');
 Vue.component('ccOrganizationUnit', ccOrganizationUnit);
+const ccIcon = () => import(/* webpackChunkName:'ccIcon' */ '@/components/button/ccIcon.vue');
+Vue.component('ccIcon', ccIcon);
 
 const ccPopup = () => import(/* webpackChunkName:'ccPopup' */ '@/components/popup/CCPopup.vue');
 Vue.component('ccPopup', ccPopup);

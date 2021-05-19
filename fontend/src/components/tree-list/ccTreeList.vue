@@ -26,8 +26,8 @@
         <slot :name="data.column.dataField" :data="data.data">{{data.data[data.column.dataField]}}</slot>
         <!-- <div @click="test(data)">aaa</div> -->
     </template>
-    <template #btn-delete>
-        <div class="btn-icon-3 hover-block">
+    <template #btn-delete="{data}">
+        <div class="btn-icon-3 hover-block" @click="clickDelete(data)">
           <div class="icon-delete"></div>
         </div>
     </template>
@@ -70,6 +70,12 @@ export default {
   computed: {
   },
   methods: {
+    /**
+     * Hàm bắt sự kiện sửa tại dòng
+     */
+    clickDelete(data){
+        this.$emit("clickDelete", data.data);
+    }
   },
 };
 </script>

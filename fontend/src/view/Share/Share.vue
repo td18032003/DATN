@@ -2,7 +2,7 @@
     <div>
         <sidebar :listOption="listSetting" :type="1"></sidebar>
         <div class="body-content">
-            vào
+            <router-view></router-view>
         </div>
     </div>
 </template>

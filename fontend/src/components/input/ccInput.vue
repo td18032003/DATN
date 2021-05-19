@@ -1,7 +1,12 @@
 <template>
-    <div class="cc-input"
+    <div class="cc-input" :style="[{'width': isNaN(width) ? width : width + 'px'}]"
     >
-        <DxTextBox :value="value"
+        <div v-if="icon" class="icon-input">
+            <div :class="icon"></div>
+        </div>
+        <DxTextBox 
+            :value="value"
+            :class="{'show-icon' : icon}"
             :mode="mode"
             :placeholder="placeholderInput"
             @value-changed="valueChanged"
@@ -30,6 +35,10 @@ export default {
         icon: {
             Type: String,
             default: null
+        },
+        width: {
+            Type: [String,Number],
+            default: "auto"
         }
     },
     data() {
@@ -47,18 +56,30 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .cc-input{
-    width: 100%;
+    position: relative;
+    min-width: 200px;
     height: 36px;
     border-radius: 4px;
-    input{
+    .dx-texteditor-input{
         width: calc(100% - 16px);
         height: 34px;
         border: none;
         outline: none;
         border-radius: 4px;
         padding: 0 8px;
+    }
+    .show-icon .dx-texteditor-input{
+        padding: 0 8px 0 32px !important;
+    }
+    .show-icon .dx-placeholder{
+        padding: 0 8px 0 24px !important;
+    }
+    .icon-input{
+        position: absolute;
+        top: 6px;
+        left: 6px;
     }
 }
 </style>

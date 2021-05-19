@@ -38,12 +38,12 @@ export default {
             inputFile: null,
             listHeader: [
                 {
-                    dataField: "FileName",
-                    caption: "Tên file"
+                    DataField: "FileName",
+                    Caption: "Tên file"
                 },
                 {
-                    dataField: "Type",
-                    caption: "Loại file"
+                    DataField: "Type",
+                    Caption: "Loại file"
                 }
             ],
             dataSource: [

@@ -6,15 +6,27 @@
                 <div class="flex">
                     <div class="tilte">Đơn vị hiện tại</div>
                 </div>
-                <div>
-                    <cc-button type="primary">Upload File</cc-button>
+                <div class="flex">
+                    <cc-input class="m-r-12" icon="icon-search" placeholderInput="Tìm kiếm tài liệu"></cc-input>
+                    <cc-button type="primary m-r-12" icon="icon-plus-white">Tải tệp</cc-button>
+                    <cc-button type="primary m-r-12" icon="icon-plus-white">Tạo thư mục</cc-button>
+                    <cc-icon type="primary-border m-r-12" icon="icon-filter"></cc-icon>
+                    <div class="flex type">
+                        <div class="type-show" :class="[{'active': typeshow == 1}]" @click="typeshow = 1">
+                            <div class="icon-list-block"></div>
+                        </div>
+                        <div class="type-show" :class="[{'active': typeshow == 2}]" @click="typeshow = 2">
+                            <div class="icon-list-dote"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="content">
-                <div v-for="(item,index) in listFolder" :key="index" class="item">
+            <div class="content" v-if="typeshow == 1">
+                <div v-for="(item,index) in dataSource" :key="index" class="item">
                     <div class="item-folder">
-                        <div>
-
+                        <div class="flex btn-hover">
+                            <cc-icon class="btn-none m-r-12" type="circle" icon="icon-export"></cc-icon>
+                            <cc-icon class="btn-none" type="circle" icon="icon-delete"></cc-icon>
                         </div>
                         <div class="flex justify-center m-b-16">
                             <img class="img-folder" src="@/assets/image/icon-file.png"/>
@@ -22,8 +34,22 @@
                         <div class="flex justify-center">
                             {{item.FileName}}
                         </div>
+                        <div class="flex justify-center text-secondary">
+                            {{item.Size}}
+                        </div>
+                        <div class="flex justify-center text-secondary">
+                            {{item.CreatedDate}}
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="content-list" v-if="typeshow == 2">
+                <ccTable 
+                    :listHeader="listHeader" 
+                    :dataSource="dataSource"
+                    @clickEdit="openEdit"
+                    @clickDelete="confirmDelete">
+                </ccTable>
             </div>
         </div>
     </div>
@@ -36,45 +62,142 @@ export default {
     },
     data(){
         return{
-            listFolder: [
+            typeshow: 1,
+            dataSource: [
                 {
                     FileID: 1,
-                    FileName: "Thư mục 1"
+                    FileName: "Thư mục 1",
+                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
+                    CreatedBy: "Cao Cường",
+                    Note: "Không",
+                    TypeFile: "Excel",
+                    Size: '100kb',
+                    CreatedDate: '17/5/2021'
                 },
                 {
                     FileID: 1,
-                    FileName: "Thư mục 2"
+                    FileName: "Thư mục 2",
+                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
+                    CreatedBy: "Cao Cường",
+                    Note: "Không",
+                    TypeFile: "Excel",
+                    Size: '100kb',
+                    CreatedDate: '17/5/2021'
                 },
                 {
                     FileID: 1,
-                    FileName: "Thư mục 3"
+                    FileName: "Thư mục 3",
+                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
+                    CreatedBy: "Cao Cường",
+                    Note: "Không",
+                    TypeFile: "Excel",
+                    Size: '100kb',
+                    CreatedDate: '17/5/2021'
                 },
                 {
                     FileID: 1,
-                    FileName: "Thư mục 4"
+                    FileName: "Thư mục 4",
+                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
+                    CreatedBy: "Cao Cường",
+                    Note: "Không",
+                    TypeFile: "Excel",
+                    Size: '100kb',
+                    CreatedDate: '17/5/2021'
                 },
                 {
                     FileID: 1,
-                    FileName: "Thư mục 5"
+                    FileName: "Thư mục 5",
+                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
+                    CreatedBy: "Cao Cường",
+                    Note: "Không",
+                    TypeFile: "Excel",
+                    Size: '100kb',
+                    CreatedDate: '17/5/2021'
                 },
                 {
                     FileID: 1,
-                    FileName: "Thư mục 6"
+                    FileName: "Thư mục 6",
+                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
+                    CreatedBy: "Cao Cường",
+                    Note: "Không",
+                    TypeFile: "Excel",
+                    Size: '100kb',
+                    CreatedDate: '17/5/2021'
                 },
                 {
                     FileID: 1,
-                    FileName: "Thư mục 7"
+                    FileName: "Thư mục 7",
+                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
+                    CreatedBy: "Cao Cường",
+                    Note: "Không",
+                    TypeFile: "Excel",
+                    Size: '100kb',
+                    CreatedDate: '17/5/2021'
                 },
                 {
                     FileID: 1,
-                    FileName: "Thư mục 8"
+                    FileName: "Thư mục 8",
+                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
+                    CreatedBy: "Cao Cường",
+                    Note: "Không",
+                    TypeFile: "Excel",
+                    Size: '100kb',
+                    CreatedDate: '17/5/2021'
                 }
-            ]
+            ],
+
+            listHeader: [
+                {
+                    DataField: "FileName",
+                    Caption: "Tên tệp",
+                    DataTyle: "text",
+                    Fixed: true,
+                    MinWidth: 150
+                },
+                {
+                    DataField: "OrganizationUnitName",
+                    Caption: "Đơn vị",
+                    DataTyle: "text",
+                    Fixed: true,
+                    MinWidth: 150
+                },
+                {
+                    DataField: "CreatedBy",
+                    Caption: "Người tạo",
+                    DataTyle: "text",
+                    MinWidth: 150
+                },
+                {
+                    DataField: "CreatedDate",
+                    Caption: "Ngày tạo",
+                    DataTyle: "date",
+                    MinWidth: 150
+                },
+                {
+                    DataField: "TypeFile",
+                    Caption: "Loại file",
+                    DataTyle: "text",
+                    MinWidth: 150
+                },
+                {
+                    DataField: "Note",
+                    Caption: "Ghi chú",
+                    DataTyle: "text",
+                    MinWidth: 150
+                },
+                {
+                    DataField: "Size",
+                    Caption: "Kích thước",
+                    DataTyle: "text",
+                    MinWidth: 150
+                },
+            ],
         }
     }
 }
 </script>
 <style lang="scss" scoped>
+@import '@/styles/var-color.scss';
 .body-organization-unit{
     width: 100%;
     height: 100%;
@@ -99,21 +222,94 @@ export default {
         .content{
             display: flex;
             flex-wrap: wrap;
+            height: calc(100% - 68px);
+            overflow: auto;
             .item{
                 .item-folder{
                     padding: 16px;
-                    width: 150px;
+                    width: 180px;
                     height: auto;
                     background-color: #ffffff;
                     margin: 0 24px 24px 0;
                     border-radius: 8px;
+                    border: 1px solid #ffffff;
                     .img-folder{
                         width: 100px;
                         height: 80px;
                     }
+                    .btn-hover{
+                        height: 36px;
+                        margin-bottom: 4px;
+                        justify-content: flex-end;
+                        .btn-none{
+                            display: none;
+                            float: right;
+                        }
+                    }
+                    &:hover{
+                        border: 1px solid $primary-hover;
+                        cursor: pointer;
+                        .btn-none{
+                            display: flex !important;
+                            float: right;
+                        }
+                    }
                 }
             }
         }
+    }
+    .content-list{
+        display: flex;
+        flex-wrap: wrap;
+        height: calc(100% - 68px) !important;
+        height: auto;
+        overflow: auto;
+        .item{
+            height: 48px;
+            margin: 0px 8px 4px 0px;
+            .item-folder-list{
+                align-items: center;
+                width: 480px;
+                height: 48px;
+                padding: 0 8px;
+                border-radius: 4px;
+                background-color: #ffffff;
+                border: 1px solid #ffffff;
+                .img-folder{
+                    width: 28px;
+                    height: 28px;
+                }
+                .text-name{
+                    width: 200px;
+                    text-overflow: ellipsis;
+                    justify-content: left;
+                }
+                &:hover{
+                    border: 1px solid $primary-hover;
+                    background-color: #d7e2ff !important;
+                    cursor: pointer;
+                    .btn-none{
+                        display: flex !important;
+                        float: right;
+                    }
+                }
+            }
+        }
+    }
+    .type{
+        border-radius: 4px;
+        background-color: #c1c1c1;
+        .active{
+            background-color: #ffffff;
+        }
+    }
+    .type-show{
+        width: 36px;
+        height: 36px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 </style>

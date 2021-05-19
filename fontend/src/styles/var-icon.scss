@@ -53,15 +53,23 @@ $link-icon1: url("../assets/icon/Icon.svg");
 //Hàng 2
 @include setIconWithDefaultColor('icon-notify',24px,24px,0px,-24px,$link-icon1);
 @include setIcon('icon-plus-white',24px,24px,#ffffff,-24px,-24px,$link-icon1);
+@include setIconWithDefaultColor('icon-search',24px,24px,-48px,-24px,$link-icon1);
 
+@include setIconWithDefaultColor('icon-filter',24px,24px,-216px,-24px,$link-icon1);
 //Hàng 3
 @include setIconWithDefaultColor('icon-back',24px,24px,-168px,-48px,$link-icon1);
 
 //Hàng 4
 @include setIconWithDefaultColor('icon-delete',24px,24px,-240px,-72px,$link-icon1);
 
+@include setIconWithDefaultColor('icon-list-dote',24px,24px,-48px,-72px,$link-icon1);
+
 //Hàng 5
 @include setIcon('icon-import',24px,24px,#2962FF,-24px,-96px,$link-icon1);
+@include setIconWithDefaultColor('icon-export',24px,24px,-24px,-96px,$link-icon1);
+
+//Hàng 7
+@include setIconWithDefaultColor('icon-list-block',24px,24px,-216px,-144px,$link-icon1);
 
 //Hàng 16
 @include setIconWithDefaultColor('icon-dismissed',24px,24px,-264px,-376px,$link-icon1);

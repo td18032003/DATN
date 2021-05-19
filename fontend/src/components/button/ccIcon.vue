@@ -32,14 +32,26 @@ export default {
 @import '@/styles/var-color.scss';
 .btn-common{
     height: 36px;
-    padding: 0 16px;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center; 
     border-radius: 4px;
     outline: none;
-    min-width: 80px;
+    width: 36px;
     cursor: pointer;
+}
+.btn-circle{
+    color: #ffffff;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    &:hover{
+        background-color: #f1f1f1;
+    }
+    &:active{
+        background-color: #f1f1f1;
+    }
 }
 .btn-primary{
     color: #ffffff;
@@ -50,6 +62,17 @@ export default {
     }
     &:active{
         background-color: $primary-active;
+    }
+}
+.btn-primary-border{
+    color: #ffffff;
+    background-color: #ffffff;
+    border: 1px solid #DDDDDD;
+    &:hover{
+        border: 1px solid $primary;
+    }
+    &:active{
+        border: 1px solid $primary;
     }
 }
 </style>

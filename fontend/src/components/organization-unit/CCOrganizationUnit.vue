@@ -1,6 +1,7 @@
 <template>
   <div class="cc-organization-unit">
     <DxDropDownBox
+        ref="dropbox"
         :value="value"
         :show-clear-button="true"
         :data-source="treeDataSource"
@@ -29,6 +30,7 @@
 <script>
 import DxDropDownBox from 'devextreme-vue/drop-down-box';
 import DxTreeView from 'devextreme-vue/tree-view';
+import OrganizationUnitAPI from "@/api/Components/OrganizationUnitAPI.js";
 
 import 'whatwg-fetch';
 
@@ -52,11 +54,20 @@ export default {
       treeViewRefName: 'tree-view'
     };
   },
+  watch: {
+    value: {
+      handler(val){
+        if(this.mode == "single"){
+          this.$refs[dropbox].instance.close();
+        }
+      }
+    }
+  },
   async created() {
-      //await this.getAll();
+    await this.getAll();
   },
   methods: {
-    /* syncTreeViewSelection() {
+    syncTreeViewSelection() {
       if (!this.$refs[this.textBoxRefName]) return;
       if (!this.value) {
         this.$refs[this.textBoxRefName].instance.unselectAll();
@@ -79,14 +90,14 @@ export default {
         numberZero = numberZero - 1;
       }
       ccCode = ccCode + number.toString();
-      this.$emit("childCode",ccCode);
+      this.$emit("childCode",e.itemData.Code + ccCode + "/");
     },
     async getAll(){
         var res = await OrganizationUnitAPI.GetAll();
         if(res.data && res.data.Success){
             this.treeDataSource = res.data.Data;
         }
-    } */
+    }
   }
 };
 </script>

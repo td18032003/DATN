@@ -71,7 +71,7 @@ export default {
         async save(){
             this.organization.ParentID = [...this.organization.ParentID].join("");
             var res = await OrganizationUnitAPI.Insert(this.organization);
-            if(res.data && res.data.success){
+            if(res.data && res.data.Success){
                 this.$emit("close", true);
             }
             else{
