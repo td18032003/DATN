@@ -53,6 +53,7 @@ namespace Upload
             services.AddTransient<IBaseUploadBL, BaseUploadBL>();
             services.AddTransient<IBaseBL, BaseBL>();
             services.AddTransient<IOrganizationUnitBL, OrganizationUnitBL>();
+            services.AddTransient<IFileBL, FileBL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
