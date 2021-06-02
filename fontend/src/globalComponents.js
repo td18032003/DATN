@@ -31,3 +31,8 @@ Vue.component('ccIcon', ccIcon);
 
 const ccPopup = () => import(/* webpackChunkName:'ccPopup' */ '@/components/popup/CCPopup.vue');
 Vue.component('ccPopup', ccPopup);
+
+const ccLoading = () => import(/* webpackChunkName:'ccLoading' */ '@/components/loading/ccLoading.vue');
+Vue.component('ccLoading', ccLoading);
+const ccRadio = () => import(/* webpackChunkName:'ccRadio' */ '@/components/radio/ccRadio.vue');
+Vue.component('ccRadio', ccRadio);

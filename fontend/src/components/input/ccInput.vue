@@ -1,5 +1,8 @@
 <template>
-    <div class="cc-input" :style="[{'width': isNaN(width) ? width : width + 'px'}]"
+    <div class="cc-input" 
+        :style="[{'width': isNaN(width) ? width : width + 'px'},
+            {'height': isNaN(height) ? height : height + 'px'}
+        ]"
     >
         <div v-if="icon" class="icon-input">
             <div :class="icon"></div>
@@ -9,6 +12,8 @@
             :class="{'show-icon' : icon}"
             :mode="mode"
             :placeholder="placeholderInput"
+            :disabled="disabled"
+            height="100%"
             @value-changed="valueChanged"
         />
     </div>
@@ -38,7 +43,15 @@ export default {
         },
         width: {
             Type: [String,Number],
-            default: "auto"
+            default: "100%"
+        },
+        height: {
+            Type: [String,Number],
+            default: "36px"
+        },
+        disabled: {
+            type: [String,Boolean],
+            default: false
         }
     },
     data() {
@@ -60,7 +73,6 @@ export default {
 .cc-input{
     position: relative;
     min-width: 200px;
-    height: 36px;
     border-radius: 4px;
     .dx-texteditor-input{
         width: calc(100% - 16px);
@@ -80,6 +92,9 @@ export default {
         position: absolute;
         top: 6px;
         left: 6px;
+    }
+    .dx-state-disabled .dx-widget, .dx-state-disabled.dx-widget{
+        opacity: unset;
     }
 }
 </style>

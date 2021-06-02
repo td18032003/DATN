@@ -7,9 +7,10 @@
                     <div class="tilte">Đơn vị hiện tại</div>
                 </div>
                 <div class="flex">
-                    <cc-input class="m-r-12" icon="icon-search" placeholderInput="Tìm kiếm tài liệu"></cc-input>
-                    <cc-button type="primary m-r-12" icon="icon-plus-white">Tải tệp</cc-button>
-                    <cc-button type="primary m-r-12" icon="icon-plus-white">Tạo thư mục</cc-button>
+                    <cc-input class="m-r-12" width="200px" icon="icon-search" placeholderInput="Tìm kiếm tài liệu"></cc-input>
+                    <cc-button type="primary m-r-12" icon="icon-plus-white" @click="uploadFile">Tải tệp</cc-button>
+                    <input type="file" ref="file" style="display: none" @change="choseFile">
+                    <cc-button type="primary m-r-12" icon="icon-plus-white" @click="openAddFolder">Tạo thư mục</cc-button>
                     <cc-icon type="primary-border m-r-12" icon="icon-filter"></cc-icon>
                     <div class="flex type">
                         <div class="type-show" :class="[{'active': typeshow == 1}]" @click="typeshow = 1">
@@ -22,129 +23,70 @@
                 </div>
             </div>
             <div class="content" v-if="typeshow == 1">
-                <div v-for="(item,index) in listFolder" :key="index" class="item">
-                    <div class="item-folder">
+                <div v-for="(item,index) in dataSource" :key="index" class="item">
+                    <div class="item-folder" @click="showPreviewFile(item)">
                         <div class="flex btn-hover">
-                            <cc-icon class="btn-none m-r-12" type="circle" icon="icon-export"></cc-icon>
-                            <cc-icon class="btn-none" type="circle" icon="icon-delete"></cc-icon>
+                            <cc-icon class="btn-none m-r-8" type="circle" icon="icon-export" @handleClick="downloadFile(item)"></cc-icon>
+                            <cc-icon class="btn-none" type="circle" icon="icon-delete" @handleClick="confirmDelete(item)"></cc-icon>
                         </div>
                         <div class="flex justify-center m-b-16">
-                            <img class="img-folder" src="@/assets/image/icon-file.png"/>
+                            <img v-if="item.TypeFile == 'Folder'" class="img-folder" src="@/assets/image/icon-file.png"/>
+                            <img v-if="item.TypeFile == 'Word'" class="img-folder" src="@/assets/image/icon-word.png"/>
+                            <img v-if="item.TypeFile == 'Excel'" class="img-folder" src="@/assets/image/icon-excel.png"/>
+                            <img v-if="item.TypeFile == 'Pdf'" class="img-folder" src="@/assets/image/icon-pdf.png"/>
                         </div>
-                        <div class="flex justify-center">
-                            {{item.FileName}}
+                        <div class="flex justify-center text-center">
+                            <span class="overflow" :title="item.FileName">{{item.FileName}}</span>
                         </div>
                         <div class="flex justify-center text-secondary">
-                            {{item.Size}}
+                            {{item.Size}}(kb)
                         </div>
                         <div class="flex justify-center text-secondary">
-                            {{item.CreatedDate}}
+                            {{formatDate(item.CreatedDate)}}
                         </div>
                     </div>
                 </div>
+                <cc-loading v-show="loading" width="40"></cc-loading>
             </div>
             <div class="content-list" v-if="typeshow == 2">
-                <!-- <div v-for="(item,index) in listFolder" :key="index" class="item">
-                    <div class="item-folder-list flex">
-                        <div class="flex justify-center m-r-12">
-                            <img class="img-folder" src="@/assets/image/icon-file.png"/>
-                        </div>
-                        <div class="flex justify-center m-r-12 text-name">
-                            {{item.FileName}}
-                        </div>
-                        <div class="flex justify-center m-r-12 text-secondary">
-                            {{item.Size}}
-                        </div>
-                        <div class="flex justify-center m-r-12 text-secondary">
-                            {{item.CreatedDate}}
-                        </div>
-                        <div class="flex btn-hover">
-                            <cc-icon class="btn-none m-r-12" type="circle" icon="icon-export"></cc-icon>
-                            <cc-icon class="btn-none" type="circle" icon="icon-delete"></cc-icon>
-                        </div>
-                    </div>
-                </div> -->
                 <ccTable 
                     :listHeader="listHeader" 
                     :dataSource="dataSource"
                     @clickEdit="openEdit"
-                    @clickDelete="confirmDelete">
+                    @clickDelete="confirmDelete"
+                    @clickDownload="downloadFile">
+                    <template #CreatedDate="{data}">
+                        {{formatDate(data.CreatedDate)}}
+                    </template>
                 </ccTable>
+                <cc-loading v-show="loading" width="40"></cc-loading>
             </div>
         </div>
+        <PopupUploadFile v-if="activePopup" v-model="activePopup" @save="afterSave" :file="fileResponse" :listFolder="listFolder"></PopupUploadFile>
+        <AddFolder v-if="activeAddFolder"  @save="afterSave" v-model="activeAddFolder" :listFolder="listFolder"></AddFolder>
+        <Preview v-if="showPreview" v-model="showPreview" :src="srcLink"></Preview>
     </div>
 </template>
 <script>
 import sidebar from "../../layout/sidebar";
+import PopupUploadFile from "./PopupUploadFile";
+import AddFolder from "./AddFolder";
+import FileAPI from '@/api/Components/FileAPI.js';
+import Preview from '../Base/Preview';
 export default {
     components: {
-        sidebar
+        sidebar,
+        PopupUploadFile,
+        AddFolder,
+        Preview
     },
     data(){
         return{
             typeshow: 1,
-            listFolder: [
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 1",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021',
-                    ParentID: 0
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 2",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021',
-                    ParentID: 0
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 3",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021',
-                    ParentID: 0
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 4",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021',
-                    ParentID: 0
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 5",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021',
-                    ParentID: 0
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 6",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021',
-                    ParentID: 0
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 7",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021',
-                    ParentID: 0
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 8",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021',
-                    ParentID: 0
-                }
-            ],
-
             listHeader: [
                 {
                     DataField: "FileName",
+                    Alignment: "left",
                     Caption: "Tên tệp",
                     DataTyle: "text",
                     Fixed: true,
@@ -153,12 +95,14 @@ export default {
                 {
                     DataField: "CreatedDate",
                     Caption: "Ngày tạo",
+                    Alignment: "center",
                     DataTyle: "date",
                     MinWidth: 150
                 },
                 {
                     DataField: "TypeFile",
                     Caption: "Loại file",
+                    Alignment: "center",
                     DataTyle: "text",
                     MinWidth: 150
                 },
@@ -175,7 +119,88 @@ export default {
                     MinWidth: 150
                 },
             ],
+            listFolder: [],
             dataSource: [],
+            activePopup: false,
+            fileName: null,
+            size: null,
+            fileResponse: null,
+            activeAddFolder: false,
+            loading: false,
+            srcLink: null,
+            showPreview: false
+        }
+    },
+    created(){
+        this.getFilePersonal();
+    },
+    methods: {
+        uploadFile(){
+            this.$refs.file.click();
+        },
+        openAddFolder(){
+            this.activeAddFolder = true;
+        },
+        choseFile(event){
+            let fd = new FormData();
+            fd.append('file',event.target.files[0])
+            this.file = fd;
+            this.fileName = event.target.files[0].name;
+            this.size = event.target.files[0].size + "kb";
+            let me = this;
+            FileAPI.UploadFile(this.file).then(res => {
+                if(res.data && res.data.Success){
+                    me.fileResponse = res.data.Data;
+                    me.activePopup = true;
+                }
+            }).catch(e => {});
+        },
+        getFilePersonal(){
+            var me = this;
+            let param = {
+                TenantID: this.$store.getters.tenantID,
+                EmployeeID: this.$store.getters.employeeID
+            }
+            this.loading = true;
+            FileAPI.GetPersonal(param).then(res => {
+                this.loading = false;
+                if(res.data && res.data.Success){
+                    me.dataSource = res.data.Data;
+                    me.listFolder = me.dataSource.filter(x => x.TypeFile == "Folder");
+                }
+            });
+        },
+        afterSave(){
+            this.activePopup = false;
+            this.activeAddFolder = false;
+            this.getFilePersonal();
+        },
+        downloadFile(data){
+            window.location.assign(data.Path);
+        },
+        confirmDelete(data){
+            this.$popup.confirmDelete("Xóa thư mục", "Bạn có chắc chắn muốn xóa thư mục <strong>" + data.FileName + "</strong> không?",this.deleteFile,data)
+        },
+        async deleteFile(data){
+            var me = this;
+            var res = await FileAPI.Delete(data.FileID);
+            if(res.data && res.data.Success){
+                me.getFilePersonal();
+            }
+            else{
+
+            }
+        },
+        formatDate(date){
+            var todayTime = new Date(date);
+            var month = todayTime.getMonth() + 1;
+            var day = todayTime.getDate();
+            var year = todayTime.getFullYear();
+            return month + "/" + day + "/" + year;
+        },
+        showPreviewFile(item){
+            this.srcLink = item.Path;
+            this.showPreview = true;
         }
     }
 }
@@ -204,6 +229,7 @@ export default {
             }
         }
         .content{
+            position: relative;
             display: flex;
             flex-wrap: wrap;
             height: calc(100% - 68px);
@@ -243,6 +269,7 @@ export default {
         }
     }
     .content-list{
+        position: relative;
         display: flex;
         flex-wrap: wrap;
         height: calc(100% - 68px) !important;
@@ -294,6 +321,12 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    .overflow{
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 </style>

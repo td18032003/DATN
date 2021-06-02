@@ -8,8 +8,12 @@
                 <div v-if="type == 3">
                     <div v-html="content"></div>
                     <div class="flex footer">
-                        <cc-button class="m-r-12" type="secondary-border" @click="handleClose">Hủy</cc-button>
-                        <cc-button type="delete" @click="handleDelete">Xóa</cc-button>
+                        <cc-button class="m-r-12" type="secondary-border" @click="handleClose">Hủy
+                        </cc-button>
+                        <cc-button type="delete" @click="handleDelete">
+                            <span v-show="!isLoading">Xóa</span>
+                            <cc-loading v-show="isLoading" bdTopColor="#ffffff"></cc-loading>
+                        </cc-button>
                     </div>
                 </div>
             </div>
@@ -27,7 +31,8 @@ export default {
             callbackDelete: null,
             dataCallbackDelete: null,
             callbackClose: null,
-            dataCallbackClose: null
+            dataCallbackClose: null,
+            isLoading: false
         }
     },
     methods: {
@@ -36,6 +41,7 @@ export default {
         },
         async handleDelete(){
             if(this.callbackDelete){
+                this.isLoading = true;
                 if(this.dataCallbackDelete){
                     await this.callbackDelete(this.dataCallbackDelete);
                 }
@@ -57,6 +63,7 @@ export default {
             this.closePopup();
         },
         closePopup(){
+            this.isLoading = false;
             this.active = false;
         },
         confirmDelete(

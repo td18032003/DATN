@@ -1,16 +1,19 @@
 <template>
-    <div>
+    <div class="cc-button">
         <button
             :class="['btn-common','btn-' + type,{'btn-icon': icon != null}]"
             @click="handleClick"
         >
             <div v-if="icon != null" :class="[icon, 'm-r-8']"></div>
-            <slot></slot>
+            <slot v-show="!loading"></slot>
+            <cc-loading v-show="loading" bdTopColor="#ffffff"></cc-loading>
         </button>
     </div>
 </template>
 <script>
+import ccLoading from '../loading/ccLoading.vue';
 export default {
+  components: { ccLoading },
     name: 'ccButton',
     props: {
         type: {
@@ -20,6 +23,10 @@ export default {
         icon: {
             Type: String,
             default: null
+        },
+        loading: {
+            type: [String,Boolean],
+            default: false
         }
     },
     methods: {
@@ -31,7 +38,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '@/styles/var-color.scss';
+.cc-button{
+    position: relative;
+}
 .btn-common{
+    position: relative;
     height: 36px;
     padding: 0 16px;
     display: flex;

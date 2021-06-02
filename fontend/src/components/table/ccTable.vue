@@ -3,7 +3,7 @@
         <DxDataGrid
             :data-source="dataSource"
             :remote-operations="false"
-            :allow-column-reordering="true"
+            :allow-column-reordering="false"
             :row-alternation-enabled="false"
             :show-borders="true"
             :columnAutoWidth="true"
@@ -32,19 +32,25 @@
                 :min-width="item.MinWidth"
                 :fixed="item.Fixed ? item.Fixed : false"
                 cell-template="cell-template"
-                :alignment="item.Alignment ? item.Alignment : 'center'"
+                :alignment="item.Alignment ? item.Alignment : 'left'"
             />
             <DxColumn
                 width="50"
                 :fixed="true"
-                fixedPosition="right"
+                fixed-position="right"
                 cell-template="btn-edit"
                 v-if="showEdit"
             />
             <DxColumn
                 width="50"
                 :fixed="true"
-                fixedPosition="right"
+                fixed-position="right"
+                cell-template="btn-download"
+            />
+            <DxColumn
+                width="50"
+                :fixed="true"
+                fixed-position="right"
                 cell-template="btn-delete"
             />
             <template #btn-edit="{data}">
@@ -64,6 +70,11 @@
             <template #button-more>
                 <div class="btn-more">
                     <div class="icon-three-dot"></div>
+                </div>
+            </template>
+            <template #btn-download="{data}">
+                <div class="btn-icon-3 btn-none" @click="clickDownload(data)">
+                    <div class="icon-export"></div>
                 </div>
             </template>
         </DxDataGrid>
@@ -119,6 +130,12 @@ export default {
          */
         clickDelete(data){
             this.$emit("clickDelete", data.data);
+        },
+        /**
+         * Hàm tải xuống
+         */
+        clickDownload(data){
+            this.$emit("clickDownload", data.data);
         }
     }
 }

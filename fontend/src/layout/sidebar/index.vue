@@ -104,6 +104,9 @@ export default {
         selectQuickSearch(val){
             this.activeQuickSearch = val;
             this.$emit("quickSearch", val);
+        },
+        selectItemFile(data){
+
         }
     },
     async created(){

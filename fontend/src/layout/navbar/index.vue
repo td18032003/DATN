@@ -57,6 +57,17 @@ export default {
             ]
         }
     },
+    mounted(){
+        var fullpath = this.$route.fullPath;
+        this.listHeader.forEach(item => {
+            if(fullpath.indexOf(item.Router) != -1){
+                item.Active = true;
+            }
+            else{
+                item.Active = false;
+            }
+        })
+    },
     methods:{
         /**
          * Đổi router - cvcuong

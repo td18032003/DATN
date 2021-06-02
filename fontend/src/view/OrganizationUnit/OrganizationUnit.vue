@@ -7,9 +7,9 @@
                     <div class="tilte">Đơn vị hiện tại</div>
                 </div>
                 <div class="flex">
-                    <cc-input class="m-r-12" icon="icon-search" placeholderInput="Tìm kiếm tài liệu"></cc-input>
-                    <cc-button type="primary m-r-12" icon="icon-plus-white">Tải tệp</cc-button>
-                    <cc-button type="primary m-r-12" icon="icon-plus-white">Tạo thư mục</cc-button>
+                    <cc-input class="m-r-12" width="200px" icon="icon-search" placeholderInput="Tìm kiếm tài liệu"></cc-input>
+                    <cc-button type="primary m-r-12" icon="icon-plus-white" @click="openAddFile">Tải tệp</cc-button>
+                    <cc-button type="primary m-r-12" icon="icon-plus-white" @click="openAddFolder">Tạo thư mục</cc-button>
                     <cc-icon type="primary-border m-r-12" icon="icon-filter"></cc-icon>
                     <div class="flex type">
                         <div class="type-show" :class="[{'active': typeshow == 1}]" @click="typeshow = 1">
@@ -52,100 +52,25 @@
                 </ccTable>
             </div>
         </div>
+        <AddFolder v-if="activeAddFolder"  @save="afterSave" v-model="activeAddFolder" :listFolder="listFolder"></AddFolder>
+        <PopupUploadFile v-if="activePopup" v-model="activePopup" @save="afterSave" :listFolder="listFolder"></PopupUploadFile>
     </div>
 </template>
 <script>
 import sidebar from "../../layout/sidebar";
+import FileAPI from '@/api/Components/FileAPI.js';
+import AddFolder from "./AddFolder";
+import PopupUploadFile from "./PopupUploadFile";
 export default {
     components: {
-        sidebar
+        sidebar,
+        AddFolder,
+        PopupUploadFile
     },
     data(){
         return{
             typeshow: 1,
-            dataSource: [
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 1",
-                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
-                    CreatedBy: "Cao Cường",
-                    Note: "Không",
-                    TypeFile: "Excel",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021'
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 2",
-                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
-                    CreatedBy: "Cao Cường",
-                    Note: "Không",
-                    TypeFile: "Excel",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021'
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 3",
-                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
-                    CreatedBy: "Cao Cường",
-                    Note: "Không",
-                    TypeFile: "Excel",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021'
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 4",
-                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
-                    CreatedBy: "Cao Cường",
-                    Note: "Không",
-                    TypeFile: "Excel",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021'
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 5",
-                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
-                    CreatedBy: "Cao Cường",
-                    Note: "Không",
-                    TypeFile: "Excel",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021'
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 6",
-                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
-                    CreatedBy: "Cao Cường",
-                    Note: "Không",
-                    TypeFile: "Excel",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021'
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 7",
-                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
-                    CreatedBy: "Cao Cường",
-                    Note: "Không",
-                    TypeFile: "Excel",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021'
-                },
-                {
-                    FileID: 1,
-                    FileName: "Thư mục 8",
-                    OrganizationUnitName: "Đại học Quốc Gia Hà Nội",
-                    CreatedBy: "Cao Cường",
-                    Note: "Không",
-                    TypeFile: "Excel",
-                    Size: '100kb',
-                    CreatedDate: '17/5/2021'
-                }
-            ],
-
+            dataSource: [],
             listHeader: [
                 {
                     DataField: "FileName",
@@ -192,7 +117,23 @@ export default {
                     MinWidth: 150
                 },
             ],
+            activeAddFolder: false,
+            listFolder: [],
+            activePopup: false
         }
+    },
+    methods: {
+        openAddFile(){
+            this.activePopup = true;
+        },
+        openAddFolder(){
+            this.activeAddFolder = true;
+        },
+        afterSave(){
+            this.activePopup = false;
+            this.activeAddFolder = false;
+            this.getFilePersonal();
+        },
     }
 }
 </script>
