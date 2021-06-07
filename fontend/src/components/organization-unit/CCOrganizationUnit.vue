@@ -1,9 +1,10 @@
 <template>
-  <div class="cc-organization-unit">
+  <div class="cc-organization-unit" :style="[{'width': isNaN(width) ? width : width + 'px'}
+        ]">
     <DxDropDownBox
         ref="dropbox"
         :value="value"
-        :show-clear-button="true"
+        :show-clear-button="false"
         :data-source="treeDataSource"
         value-expr="OrganizationUnitID"
         display-expr="OrganizationUnitName"
@@ -40,13 +41,17 @@ export default {
     DxTreeView,
   },
   props: {
-      value: {
-        
-      },
-      mode: {
-          Type: String,
-          default: "single"
-      }
+    value: {
+      
+    },
+    mode: {
+        Type: String,
+        default: "single"
+    },
+    width: {
+      type: [String, Number],
+      default: "100%"
+    }
   },
   data() {
     return {
@@ -58,7 +63,9 @@ export default {
     value: {
       handler(val){
         if(this.mode == "single"){
-          this.$refs[dropbox].instance.close();
+          if(this.$refs["dropbox"]){
+            this.$refs["dropbox"].instance.close();
+          }
         }
       }
     }
@@ -103,11 +110,11 @@ export default {
 </script>
 <style lang="scss">
 .cc-organization-unit{
-    width: 100%;
+    
 }
 .dx-treeview-item-without-checkbox.dx-state-focused > .dx-treeview-item {
     background-color: #e3f0ff;
-    color: #0075FF;
+    color: #212121;
     border-radius: 4px;
 }
 .dx-treeview-item-without-checkbox.dx-state-selected > .dx-treeview-item {

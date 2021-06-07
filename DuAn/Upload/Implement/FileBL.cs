@@ -25,7 +25,11 @@ namespace Upload.Implement
             string where = string.Empty;
             if (param.ContainsKey("ParentID"))
             {
-                where = $"AND ParentID = {param["ParentID"]};";
+                where = $" AND ParentID = {param["ParentID"]};";
+            }
+            if (param.ContainsKey("OrganizationUnitID"))
+            {
+                where = where + $" AND OrganizationUnitID = {param["OrganizationUnitID"]}";
             }
             string sql = $"SELECT * FROM file WHERE TenantID = '{param["TenantID"]}' AND CreatedBy = {param["EmployeeID"]}" + where + " Order By TypeFileEnum";
             return await QueryAsync<Models.File>(sql);

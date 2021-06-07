@@ -1,13 +1,14 @@
 <template>
     <div class="body-organization-unit">
-        <sidebar></sidebar>
+        <sidebar :type="3" :dataSourceFile="listFolder"  :value="folderSelected.FileID" @selectedFile="selectedFolder" @quickSearch="quickSearch"></sidebar>
         <div class="body-content">
             <div class="header flex">
                 <div class="flex">
-                    <div class="tilte">Đơn vị hiện tại</div>
+                    <div class="tilte" :title="folderSelected.FileName">{{folderSelected.FileName}}</div>
                 </div>
                 <div class="flex">
                     <cc-input class="m-r-12" width="200px" icon="icon-search" placeholderInput="Tìm kiếm tài liệu"></cc-input>
+                    <cc-organization-unit width="250px" class="m-r-12" v-model="organizationUnitID" @selected="selectOrg"></cc-organization-unit>
                     <cc-button type="primary m-r-12" icon="icon-plus-white" @click="openAddFile">Tải tệp</cc-button>
                     <cc-button type="primary m-r-12" icon="icon-plus-white" @click="openAddFolder">Tạo thư mục</cc-button>
                     <cc-icon type="primary-border m-r-12" icon="icon-filter"></cc-icon>
@@ -20,28 +21,33 @@
                         </div>
                     </div>
                 </div>
+                <cc-loading v-show="loading" width="40"></cc-loading>
             </div>
             <div class="content" v-if="typeshow == 1">
                 <div v-for="(item,index) in dataSource" :key="index" class="item">
-                    <div class="item-folder">
+                    <div class="item-folder" @click="showPreviewFile(item)">
                         <div class="flex btn-hover">
                             <cc-icon class="btn-none m-r-12" type="circle" icon="icon-export"></cc-icon>
                             <cc-icon class="btn-none" type="circle" icon="icon-delete"></cc-icon>
                         </div>
                         <div class="flex justify-center m-b-16">
-                            <img class="img-folder" src="@/assets/image/icon-file.png"/>
+                            <img v-if="item.TypeFile == 'Folder'" class="img-folder" src="@/assets/image/icon-file.png"/>
+                            <img v-if="item.TypeFile == 'Word'" class="img-folder" src="@/assets/image/icon-word.png"/>
+                            <img v-if="item.TypeFile == 'Excel'" class="img-folder" src="@/assets/image/icon-excel.png"/>
+                            <img v-if="item.TypeFile == 'Pdf'" class="img-folder" src="@/assets/image/icon-pdf.png"/>
                         </div>
-                        <div class="flex justify-center">
-                            {{item.FileName}}
+                        <div class="flex justify-center text-center">
+                            <span class="overflow" :title="item.FileName">{{item.FileName}}</span>
                         </div>
                         <div class="flex justify-center text-secondary">
                             {{item.Size}}
                         </div>
                         <div class="flex justify-center text-secondary">
-                            {{item.CreatedDate}}
+                            {{formatDate(item.CreatedDate)}}
                         </div>
                     </div>
                 </div>
+                <cc-loading v-show="loading" width="40"></cc-loading>
             </div>
             <div class="content-list" v-if="typeshow == 2">
                 <ccTable 
@@ -52,8 +58,22 @@
                 </ccTable>
             </div>
         </div>
-        <AddFolder v-if="activeAddFolder"  @save="afterSave" v-model="activeAddFolder" :listFolder="listFolder"></AddFolder>
-        <PopupUploadFile v-if="activePopup" v-model="activePopup" @save="afterSave" :listFolder="listFolder"></PopupUploadFile>
+        <AddFolder 
+            v-if="activeAddFolder"  
+            @save="afterSave" 
+            v-model="activeAddFolder" 
+            :listFolder="listFolder"
+            :organizationUnitID="organizationUnitID"
+            :organizationUnitNam="organizationUnitName">
+        </AddFolder>
+        <PopupUploadFile 
+            v-if="activePopup" 
+            v-model="activePopup" 
+            @save="afterSave" 
+            :listFolder="listFolder" 
+            :organizationUnitID="organizationUnitID"
+            :organizationUnitNam="organizationUnitName">
+        </PopupUploadFile>
     </div>
 </template>
 <script>
@@ -61,6 +81,7 @@ import sidebar from "../../layout/sidebar";
 import FileAPI from '@/api/Components/FileAPI.js';
 import AddFolder from "./AddFolder";
 import PopupUploadFile from "./PopupUploadFile";
+import OrganizationUnitAPI from "@/api/Components/OrganizationUnitAPI.js";
 export default {
     components: {
         sidebar,
@@ -119,10 +140,51 @@ export default {
             ],
             activeAddFolder: false,
             listFolder: [],
-            activePopup: false
+            activePopup: false,
+            organizationUnitID: null,
+            organizationUnitName: null,
+            loading: false,
+            listOrg: [],
+            listData: [],
+            folderSelected: {
+                FileID: 0,
+                FileName: "Tất cả"
+            }
         }
     },
+    watch: {
+        organizationUnitID: {
+            handler(val){
+                this.getFilePersonal();
+            }
+        }
+    },
+    async created(){
+        await this.getAllOrg();
+        this.getFilePersonal();
+    },
     methods: {
+        getFilePersonal(){
+            var me = this;
+            let param = {
+                TenantID: this.$store.getters.tenantID,
+                EmployeeID: this.$store.getters.employeeID,
+                OrganizationUnitID: this.organizationUnitID
+            }
+            this.loading = true;
+            FileAPI.GetPersonal(param).then(res => {
+                this.loading = false;
+                if(res.data && res.data.Success){
+                    me.listData = res.data.Data;
+                    me.dataSource = me.listData.filter(x => x.ParentID == me.folderSelected.FileID);
+                    me.listFolder = me.listData.filter(x => x.TypeFile == "Folder");
+                }
+            });
+        },
+        selectOrg(val){
+            this.organizationUnitID = val.OrganizationUnitID;
+            this.organizationUnitName = val.OrganizationUnitName;
+        },
         openAddFile(){
             this.activePopup = true;
         },
@@ -134,6 +196,53 @@ export default {
             this.activeAddFolder = false;
             this.getFilePersonal();
         },
+        async getAllOrg(){
+            var res = await OrganizationUnitAPI.GetAll();
+            if(res.data && res.data.Success){
+                this.listOrg = res.data.Data;
+                this.organizationUnitID = this.listOrg[0].OrganizationUnitID;
+                this.organizationUnitName = this.listOrg[0].OrganizationUnitName;
+            }
+        },
+        formatDate(date){
+            var todayTime = new Date(date);
+            var month = todayTime.getMonth() + 1;
+            var day = todayTime.getDate();
+            var year = todayTime.getFullYear();
+            return month + "/" + day + "/" + year;
+        },
+        showPreviewFile(item){
+            if(item.TypeFileEnum == 0){
+                this.folderSelected = item;
+                this.dataSource = this.listData.filter(x => x.ParentID == this.folderSelected.FileID);
+            }
+            else{
+                this.srcLink = item.Path;
+                this.showPreview = true;
+            }
+        },
+        selectedFolder(val){
+            if(val == null){
+                this.folderSelected = {
+                    FileID: 0,
+                    FileName: "Tất cả"
+                }
+                this.dataSource = this.listData.filter(x => x.ParentID == 0);
+            }
+            else{
+                this.folderSelected = val;
+                this.dataSource = this.listData.filter(x => x.ParentID == val.FileID);
+            }
+        },
+        quickSearch(val){
+            if(!val){
+                this.folderSelected = {
+                    FileID: 0,
+                    FileName: "Tất cả"
+                }
+                this.dataSource = this.listData.filter(x => x.ParentID == 0);
+            }
+        }
     }
 }
 </script>
@@ -158,6 +267,11 @@ export default {
             .tilte{
                 font-weight: 500;
                 font-size: 18px;
+                width: 180px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                cursor: pointer;
             }
         }
         .content{
@@ -251,6 +365,12 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    .overflow{
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 </style>

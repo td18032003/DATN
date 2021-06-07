@@ -27,7 +27,7 @@ export default {
         loading: {
             type: [String,Boolean],
             default: false
-        }
+        },
     },
     methods: {
         handleClick(){

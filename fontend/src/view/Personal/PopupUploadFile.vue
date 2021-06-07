@@ -92,7 +92,6 @@ export default {
             this.$emit("input",false);
         },
         uploadFile(){
-            debugger
             var me = this;
             this.file.TenantID = this.$store.getters.tenantID;
             this.file.CreatedBy = this.$store.getters.employeeID;

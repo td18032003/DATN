@@ -65,4 +65,7 @@ export default {
 .content-popup{
     padding: 4px 16px 4px 16px;
 }
+.dx-popup-wrapper .dx-state-focused.dx-overlay-content{
+    border: none;
+}
 </style>

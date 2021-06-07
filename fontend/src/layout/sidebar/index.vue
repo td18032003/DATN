@@ -9,7 +9,7 @@
         </div>
         <div v-if="type == 2">
             <DxTreeView
-                :value="value"
+                :value="valueOrg"
                 ref="treeViewOrg"
                 :data-source="dataSource"
                 :select-by-click="true"
@@ -27,12 +27,12 @@
                     Tất cả
                 </div>
                 <div class="item-sidebar" :class="[{'item-active': activeQuickSearch}]" @click="selectQuickSearch(true)">
-                    Truy cập nhanh
+                    Ghim
                 </div>
             </div>
             <DxTreeView
-                :value="value"
-                ref="treeViewOrg"
+                :value="valueFile"
+                ref="treeViewFile"
                 :data-source="dataSourceFile"
                 :select-by-click="true"
                 data-structure="plain"
@@ -40,6 +40,7 @@
                 parent-id-expr="ParentID"
                 selection-mode="single"
                 display-expr="FileName"
+                expandExpr="Expanded"
                 @item-click="selectItemFile"
             />
         </div>
@@ -68,13 +69,41 @@ export default {
         dataSourceFile: {
             Type: Array,
             default: () => []
+        },
+        selectedFileID: {
+            Type: Number,
+            default: 0
         }
     },
     data(){
         return{
             dataSource: [
             ],
-            activeQuickSearch: false
+            activeQuickSearch: false,
+            valueFile: null,
+            valueOrg: null,
+            listExpanded: []
+        }
+    },
+    watch:{
+        value: {
+            handler(val){
+                if(this.type == 3 && val){
+                    this.$refs.treeViewFile.instance.selectItem(val);
+                }
+            }
+        },
+        dataSourceFile: {
+            handler(val){
+                if(val){
+                    this.dataSourceFile.forEach(element => {
+                        if(element.ParentID == 0){
+                            element["Expanded"] = true;
+                        }
+                    });
+                }
+            },
+            immediate: true
         }
     },
     methods: {
@@ -97,16 +126,22 @@ export default {
             var res = await OrganizationUnitAPI.GetAll();
             if(res.data && res.data.Success){
                 me.dataSource = res.data.Data;
-                me.value = me.dataSource[0].OrganizationUnitID;
+                me.valueOrg = me.dataSource[0].OrganizationUnitID;
                 me.dataSource[0]["selected"] = true;
             }
         },
         selectQuickSearch(val){
             this.activeQuickSearch = val;
+            this.$refs.treeViewFile.instance.unselectAll();
             this.$emit("quickSearch", val);
         },
         selectItemFile(data){
-
+            if(!data.itemData["selected"]){
+                this.$emit("selectedFile", data.itemData);
+            }
+            else{
+                this.$emit("selectedFile", null);
+            }
         }
     },
     async created(){
@@ -147,7 +182,6 @@ export default {
     .dx-treeview-item{
         display: flex;
         vertical-align: middle;
-        height: 34px;
         padding: 5px 8px;
         border-radius: 4px;
         margin-bottom: 2px;

@@ -19,7 +19,7 @@
                         Tên đơn vị
                     </cc-col>
                     <cc-col w="30" class="m-r-60">
-                        <cc-input v-model="organization.OrganizationUnitName" @childCode="setCCCOde"></cc-input>
+                        <cc-input v-model="organization.OrganizationUnitName"></cc-input>
                     </cc-col>
                     <cc-col w="15">
                         Đơn vị cha
@@ -69,7 +69,10 @@ export default {
             this.$emit("close",false);
         },
         async save(){
-            this.organization.ParentID = [...this.organization.ParentID].join("");
+            debugger
+            if(this.organization.ParentID){
+                this.organization.ParentID = [...this.organization.ParentID].join("");
+            }
             var res = await OrganizationUnitAPI.Insert(this.organization);
             if(res.data && res.data.Success){
                 this.$emit("close", true);

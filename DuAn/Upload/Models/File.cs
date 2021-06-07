@@ -33,6 +33,8 @@ namespace Upload.Models
 
         public string NoteShared { get; set; }
 
+        public string NoteOrganizationUnit { get; set; }
+
         public string TypeFile { get; set; }
 
         public string Path { get; set; }

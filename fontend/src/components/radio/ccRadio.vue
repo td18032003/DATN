@@ -31,6 +31,7 @@ export default {
     methods: {
         changeValue(e){
             this.$emit("input", e.value);
+            this.$emit("changed", e.value);
         }
     }
 }

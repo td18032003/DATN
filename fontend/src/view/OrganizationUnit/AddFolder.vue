@@ -29,7 +29,7 @@
                     Ghi chú
                 </cc-col>
                 <cc-col w="60">
-                    <cc-input :height="72" v-model="file.Note"></cc-input>
+                    <cc-input :height="72" v-model="file.NoteOrganizationUnit"></cc-input>
                 </cc-col>
             </cc-row>
             <div class="footer">
@@ -51,6 +51,14 @@ export default {
         listFolder: {
             type: Array,
             default: () => []
+        },
+        organizationUnitID: {
+            type: Number,
+            default: null
+        },
+        organizationUnitName: {
+            type: String,
+            default: null
         }
     },
     data(){
@@ -60,7 +68,10 @@ export default {
                 Note: null,
                 TypeFile: "Folder",
                 TenantID: null,
-                CreatedBy: null
+                CreatedBy: null,
+                NoteOrganizationUnit: null,
+                OrganizationUnitID: null,
+                OrganizationUnitName: null
             },
             loading: false
         }
@@ -73,6 +84,8 @@ export default {
             var me = this;
             this.file.TenantID = this.$store.getters.tenantID;
             this.file.CreatedBy = this.$store.getters.employeeID;
+            this.file.OrganizationUnitID = this.organizationUnitID;
+            this.file.OrganizationUnitName = this.organizationUnitName;
             this.loading = true;
             FileAPI.Insert(this.file).then(res => {
                 me.loading = false;

@@ -9,6 +9,7 @@
             :value-expr="valueField"
             :searchEnabled="true"
             :searchExpr="[displayField]"
+            noDataText="Không có dữ liệu"
             @selectionChanged="changeSelect"
           />
     </div>
