@@ -38,5 +38,3 @@ const ccLoading = () => import(/* webpackChunkName:'ccLoading' */ '@/components/
 Vue.component('ccLoading', ccLoading);
 const ccRadio = () => import(/* webpackChunkName:'ccRadio' */ '@/components/radio/ccRadio.vue');
 Vue.component('ccRadio', ccRadio);
-const ccDate = () => import(/* webpackChunkName:'ccDate' */ '@/components/date/CCDate.vue');
-Vue.component('ccDate', ccDate);
