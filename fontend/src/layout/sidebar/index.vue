@@ -3,7 +3,7 @@
         <div v-if="type == 1">
             <div v-for="(item,index) in listOption" :key="index">
                 <div class="item" :class="{'active': item.Active}" @click="changeRouter(item)">
-                    {{item.Name}}
+                    <div :class="[item.Icon]"></div>{{item.Name}}
                 </div>
             </div>
         </div>
@@ -242,9 +242,10 @@ export default {
         .item-sidebar{
             padding: 8px 16px;
             border-bottom: 1px solid #dddddd;
-            background-color: #f5f5f5;
-            color:  #d1d1d1;
+            background-color: #304FFE;
+            color: #ffffff;
             cursor: pointer;
+            border-radius: 8px;
         }
         .item-right{
             border-right: 1px solid #dddddd;

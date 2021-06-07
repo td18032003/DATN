@@ -29,6 +29,8 @@ Vue.component('ccOrganizationUnit', ccOrganizationUnit);
 const ccIcon = () => import(/* webpackChunkName:'ccIcon' */ '@/components/button/ccIcon.vue');
 Vue.component('ccIcon', ccIcon);
 
+const ccDate = () => import(/* webpackChunkName:'ccIcon' */ '@/components/date/CCDate.vue');
+Vue.component('ccDate', ccDate);
 const ccPopup = () => import(/* webpackChunkName:'ccPopup' */ '@/components/popup/CCPopup.vue');
 Vue.component('ccPopup', ccPopup);
 
