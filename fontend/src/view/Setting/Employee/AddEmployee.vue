@@ -15,9 +15,9 @@
         <div class="view-info">
             <cc-group>
                 <cc-row>
-                    <cc-col w="100">
+                    <cc-col w="100" class="avatar-block">
                         <img v-if="employee.Avatar" class="avatar" :src="employee.Avatar"/>
-                        <div v-else>
+                        <div v-else class="avatar">
                             <div class="icon-user-big"></div>
                         </div>
                     </cc-col>
@@ -175,10 +175,18 @@ export default {
         font-size: 24px;
         font-weight: 500;
     }
-    .avatar{
-        width: 100px;
-        height: 100px;
-        border-radius: 50px;
-    }
+}
+.avatar{
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+}
+.avatar-block{
+    justify-content: center;
+    display: flex;
 }
 </style>
