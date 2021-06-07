@@ -28,7 +28,7 @@
                     <div class="item-folder" @click="showPreviewFile(item)">
                         <div class="flex btn-hover">
                             <cc-icon class="btn-none m-r-12" type="circle" icon="icon-export"></cc-icon>
-                            <cc-icon class="btn-none" type="circle" icon="icon-delete"></cc-icon>
+                            <cc-icon class="btn-none" type="circle" icon="icon-delete" @handleClick="confirmDelete(item)"></cc-icon>
                         </div>
                         <div class="flex justify-center m-b-16">
                             <img v-if="item.TypeFile == 'Folder'" class="img-folder" src="@/assets/image/icon-file.png"/>
@@ -242,7 +242,10 @@ export default {
                 }
                 this.dataSource = this.listData.filter(x => x.ParentID == 0);
             }
-        }
+        },
+        confirmDelete(data){
+            this.$popup.confirmDelete("Xóa thư mục", "Bạn có chắc chắn muốn xóa thư mục <strong>" + data.FileName + "</strong> không?",this.deleteFile,data)
+        },
     }
 }
 </script>
