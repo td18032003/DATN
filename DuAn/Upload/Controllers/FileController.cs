@@ -36,6 +36,37 @@ namespace Upload.Controllers
             }
             return res;
         }
+
+        [HttpPost("search")]
+        public async Task<ServiceResponse> SearchFile(string param)
+        {
+            ServiceResponse res = new ServiceResponse() { };
+            try
+            {
+                res.Data = await _fileBL.SearchFile(param);
+            }
+            catch (Exception ex)
+            {
+                return _baseBL.Error(ex);
+            }
+            return res;
+        }
+
+        [HttpPost("insert-personal")]
+        public async Task<ServiceResponse> InsertPersonal(Models.File file)
+        {
+            ServiceResponse res = new ServiceResponse() { };
+            try
+            {
+                res.Data = await _fileBL.InsertPersonal(file);
+            }
+            catch (Exception ex)
+            {
+                return _baseBL.Error(ex);
+            }
+            return res;
+        }
+
         [HttpPost("upload-file"), DisableRequestSizeLimit]
         public ServiceResponse UploadFile()
         {

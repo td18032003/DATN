@@ -18,5 +18,8 @@ class FileAPI extends BaseAPI {
     async GetPersonal(param){
         return this.Post("/personal",param);
     }
+    async InsertPersonal(param){
+        return this.Post("/insert-personal",param);
+    }
 }
 export default new FileAPI();

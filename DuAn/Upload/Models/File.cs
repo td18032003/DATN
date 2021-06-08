@@ -39,6 +39,8 @@ namespace Upload.Models
 
         public string Path { get; set; }
 
+        public string Content { get; set; }
+
         public Guid TenantID { get; set; }
 
         public int Size { get; set; }
