@@ -22,14 +22,14 @@
                         </div>
                     </cc-col>
                 </cc-row>
-                 <cc-row>
+                 <!-- <cc-row>
                     <cc-col w="15">
                         Địa chỉ
                     </cc-col>
                     <cc-col w="30">
                         <cc-input v-model="organization.Address"></cc-input>
                     </cc-col>
-                </cc-row>
+                </cc-row> -->
             </cc-group>
             <cc-group title="Thông tin nhân viên" class="m-t-24">
                 <cc-row>
@@ -51,13 +51,14 @@
                         Giới tính
                     </cc-col>
                     <cc-col w="30" class="m-r-60">
-                        <cc-input v-model="employee.EmployeeCode"></cc-input>
+                        <cc-select-box v-model="employee.Gender" :dataSource="listGender"
+                        @selected="selectedFile"></cc-select-box>
                     </cc-col>
                     <cc-col w="15">
                         Ngày sinh
                     </cc-col>
                     <cc-col w="30">
-                        <cc-input v-model="employee.EmployeeName"></cc-input>
+                        <cc-date v-model="employee.Birth"></cc-date>
                     </cc-col>
                 </cc-row>
                 <cc-row>
@@ -108,9 +109,12 @@
 </template>
 <script>
 import OrganizationUnitAPI from "@/api/Components/OrganizationUnitAPI.js";
+import CcSelectBox from '../../../components/select-box/ccSelectBox.vue';
+import CCDate from '../../../components/date/CCDate.vue';
 export default {
     data(){
         return{
+            listGender : ["Nam","Nữ", "Khác"],
             employee: {
                 EmployeeCode: null,
                 EmployeeName: null,

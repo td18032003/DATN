@@ -24,6 +24,7 @@
 </template>
 <script>
 import AddEmployee from "./AddEmployee.vue";
+import EmployeeAPI from "@/api/Components/EmployeeAPI.js"
 export default {
     components: {
         AddEmployee
@@ -92,13 +93,23 @@ export default {
             showDetail: false
         }
     },
+    async created() {
+        await this.getAll();
+    },
     methods: {
         openAdd(){
             this.showDetail = true;
         },
         closeForm(){
             this.showDetail = false;
+        },
+        async getAll(){
+        var res = await EmployeeAPI.GetAll();
+        if(res.data && res.data.Success){
+            this.dataSource = res.data.Data;
+            console.log("employees", res.data.Data);
         }
+    }
     }
 }
 </script>
