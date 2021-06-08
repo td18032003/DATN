@@ -8,7 +8,7 @@
                 <div class="flex">
                     <cc-input class="m-r-12" width="200px" icon="icon-search" placeholderInput="Tìm kiếm tài liệu"></cc-input>
                     <cc-button type="primary m-r-12" icon="icon-plus-white" @click="openAddFolder">Tạo thư mục</cc-button>
-                    <cc-icon type="primary-border m-r-12" icon="icon-filter"></cc-icon>
+                    <cc-icon type="primary-border m-r-12" icon="icon-filter" @handleClick="openFilter()"></cc-icon>
                     <div class="flex type">
                         <div class="type-show" :class="[{'active': typeshow == 1}]" @click="typeshow = 1">
                             <div class="icon-list-block"></div>
@@ -69,6 +69,7 @@
         </PopupUploadFile>
         <AddFolder v-if="activeAddFolder"  @save="afterSave" v-model="activeAddFolder" :listFolder="listFolder"></AddFolder>
         <Preview v-if="showPreview" v-model="showPreview" :src="srcLink"></Preview>
+        <PopupShowFile v-if="showFind" v-model="showFind"></PopupShowFile>
     </div>
 </template>
 <script>
@@ -76,11 +77,13 @@ import PopupUploadFile from "./PopupUploadFile.vue";
 import AddFolder from "../../Personal/AddFolder.vue";
 import FileAPI from '@/api/Components/FileAPI.js';
 import Preview from '../../Base/Preview.vue';
+import PopupShowFile from './PopupShowFile.vue';
 export default {
     components: {
         PopupUploadFile,
         AddFolder,
-        Preview
+        Preview,
+        PopupShowFile
     },
     data(){
         return{
@@ -130,7 +133,8 @@ export default {
             activeAddFolder: false,
             loading: false,
             srcLink: null,
-            showPreview: false
+            showPreview: false,
+            showFind: false
         }
     },
     created(){
@@ -206,6 +210,9 @@ export default {
         showPreviewFile(item){
             this.srcLink = item.Path;
             this.showPreview = true;
+        },
+        openFilter() {
+            this.showFind = true;
         }
     }
 }

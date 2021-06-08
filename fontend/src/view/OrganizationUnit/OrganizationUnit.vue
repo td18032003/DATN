@@ -11,7 +11,7 @@
                     <cc-organization-unit width="250px" class="m-r-12" v-model="organizationUnitID" @selected="selectOrg"></cc-organization-unit>
                     <cc-button type="primary m-r-12" icon="icon-plus-white" @click="openAddFile">Tải tệp</cc-button>
                     <cc-button type="primary m-r-12" icon="icon-plus-white" @click="openAddFolder">Tạo thư mục</cc-button>
-                    <cc-icon type="primary-border m-r-12" icon="icon-filter"></cc-icon>
+                    <cc-icon type="primary-border m-r-12" icon="icon-filter" @handleClick="openFilter()"></cc-icon>
                     <div class="flex type">
                         <div class="type-show" :class="[{'active': typeshow == 1}]" @click="typeshow = 1">
                             <div class="icon-list-block"></div>
@@ -74,6 +74,7 @@
             :organizationUnitID="organizationUnitID"
             :organizationUnitNam="organizationUnitName">
         </PopupUploadFile>
+        <PopupShowFile v-if="showFind" v-model="showFind"></PopupShowFile>
     </div>
 </template>
 <script>
@@ -82,11 +83,13 @@ import FileAPI from '@/api/Components/FileAPI.js';
 import AddFolder from "./AddFolder";
 import PopupUploadFile from "./PopupUploadFile";
 import OrganizationUnitAPI from "@/api/Components/OrganizationUnitAPI.js";
+import PopupShowFile from './PopupShowFile.vue';
 export default {
     components: {
         sidebar,
         AddFolder,
-        PopupUploadFile
+        PopupUploadFile,
+        PopupShowFile
     },
     data(){
         return{
@@ -149,7 +152,8 @@ export default {
             folderSelected: {
                 FileID: 0,
                 FileName: "Tất cả"
-            }
+            },
+            showFind: false
         }
     },
     watch: {
@@ -246,6 +250,9 @@ export default {
         confirmDelete(data){
             this.$popup.confirmDelete("Xóa thư mục", "Bạn có chắc chắn muốn xóa thư mục <strong>" + data.FileName + "</strong> không?",this.deleteFile,data)
         },
+        openFilter() {
+            this.showFind = true;
+        }
     }
 }
 </script>
