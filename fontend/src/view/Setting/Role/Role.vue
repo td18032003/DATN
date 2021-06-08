@@ -1,5 +1,6 @@
 <template>
-    <div class="role-view">
+<div>
+    <div v-if="!showDetail" class="role-view">
         <div class="header">
             <div class="title">
                 <span>Vai trò</span>
@@ -18,12 +19,15 @@
             </cc-table>
         </div>
     </div>
+    <AddRole v-if="showDetail"></AddRole>
+</div>
 </template>
 <script>
-import CcButton from '../../../components/button/ccButton.vue'
-import CcInput from '../../../components/input/ccInput.vue'
+import AddRole from './AddRole.vue';
 export default {
-    components: { CcInput, CcButton },
+    components: { 
+        AddRole
+     },
     data(){
         return{
             open: false,
@@ -54,7 +58,13 @@ export default {
                     Note: "Người dùng bình thường"
                 }
             ],
-            type: 1
+            type: 1,
+            showDetail: false
+        }
+    },
+    methods: {
+        openAdd(){
+            this.showDetail = true;
         }
     }
 }

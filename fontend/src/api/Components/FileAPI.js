@@ -16,10 +16,13 @@ class FileAPI extends BaseAPI {
         });;
     }
     async GetPersonal(param){
-        return this.Post("/personal",param);
+        return await this.Post("/personal",param);
     }
     async InsertPersonal(param){
-        return this.Post("/insert-personal",param);
+        return await this.Post("/insert-personal",param);
+    }
+    async SearchPersonal(param){
+        return await this.Post("/search",JSON.stringify(param));
     }
 }
 export default new FileAPI();

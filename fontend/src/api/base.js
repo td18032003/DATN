@@ -13,8 +13,14 @@ export default class BaseAPI{
     }
 
     async Post(route,data){
-        var res =  await Axios.post(this.api + this.controller + route, data)
-        return res
+        return await Axios.post(this.api + this.controller + route, data,
+        {
+            headers: { 'Content-Type': "application/json" }
+        }).then(response => {
+            return response;
+        }).catch(error => {
+            console.log(error);
+        });;
     }
 
     async Delete(id){

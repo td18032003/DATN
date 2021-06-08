@@ -3,6 +3,7 @@
         :style="[{'width': isNaN(width) ? width : width + 'px'},
             {'height': isNaN(height) ? height : height + 'px'}
         ]"
+        @keyup.enter="handlekeyup"
     >
         <div v-if="icon" class="icon-input">
             <div :class="icon"></div>
@@ -65,6 +66,9 @@ export default {
     methods: {
         valueChanged(data){
             this.$emit("input", data.value);
+        },
+        handlekeyup(e){
+          this.$emit('handlekeyup',this.value);  
         }
     }
 }

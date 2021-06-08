@@ -50,7 +50,6 @@
 </template>
 <script>
 import FileAPI from '@/api/Components/FileAPI.js';
-import CcSelectBox from '../../components/select-box/ccSelectBox.vue';
 export default {
     props: {
         value:{

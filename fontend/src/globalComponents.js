@@ -38,3 +38,5 @@ const ccLoading = () => import(/* webpackChunkName:'ccLoading' */ '@/components/
 Vue.component('ccLoading', ccLoading);
 const ccRadio = () => import(/* webpackChunkName:'ccRadio' */ '@/components/radio/ccRadio.vue');
 Vue.component('ccRadio', ccRadio);
+const ccCheckBox = () => import(/* webpackChunkName:'ccCheckBox' */ '@/components/checkbox/ccCheckBox.vue');
+Vue.component('ccCheckBox', ccCheckBox);

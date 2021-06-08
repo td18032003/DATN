@@ -38,7 +38,7 @@ namespace Upload.Controllers
         }
 
         [HttpPost("search")]
-        public async Task<ServiceResponse> SearchFile(string param)
+        public async Task<ServiceResponse> SearchFile([FromBody] string param)
         {
             ServiceResponse res = new ServiceResponse() { };
             try
