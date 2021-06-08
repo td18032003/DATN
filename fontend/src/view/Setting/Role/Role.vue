@@ -1,27 +1,21 @@
 <template>
-    <div class="">
+    <div class="role-view">
         <div class="header">
             <div class="title">
-                Vai trò
+                <span>Vai trò</span>
             </div>
-            <div class="tool">
-                <div class="search">
-                    <cc-input :placeholderInput="'Tìm kiếm'"></cc-input>
-                </div>
-                <div class="add">
-                    <cc-button>Thêm</cc-button>
-                </div>
+            <div class="flex">
+                <cc-input class="m-r-12" width="250px" icon="icon-search" placeholderInput="Tìm kiếm vai trò"></cc-input>
+                <cc-button type="primary" icon="icon-plus-white" @click="openAdd">Thêm</cc-button>
             </div>
         </div>
         <div class="table-show">
-            <div class="table">
             <cc-table
                 :listHeader="listHeader"
                 :dataSource="dataSource"
 
             >
             </cc-table>
-        </div>
         </div>
     </div>
 </template>
@@ -38,26 +32,26 @@ export default {
             inputFile: null,
             listHeader: [
                 {
-                    DataField: "FileName",
-                    Caption: "Tên file"
+                    DataField: "RoleName",
+                    Caption: "Tên vai trò"
                 },
                 {
-                    DataField: "Type",
-                    Caption: "Loại file"
+                    DataField: "Note",
+                    Caption: "Ghi chú"
                 }
             ],
             dataSource: [
                 {
-                    FileName: "Tuan Anh",
-                    Type: "vjp"
+                    RoleName: "Quản trị hệ thống",
+                    Note: "admin của chương trình"
                 },
                 {
-                    FileName: "Tuan Anh",
-                    Type: "vjp"
+                    RoleName: "Quản lý nhân sự",
+                    Note: "Quản lý các phần trong chương trình"
                 },
                 {
-                    FileName: "Tuan Anh",
-                    Type: "vjp"
+                    RoleName: "Nhân sự",
+                    Note: "Người dùng bình thường"
                 }
             ],
             type: 1
@@ -66,19 +60,21 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-    .title {
-
-    }
-    .tool {
+.role-view{
+    height: 100%;
+    .header{
+        height: 36px;
         display: flex;
-    }
-        .search {
-            margin-right: 20px;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        .title{
+            font-size: 18px;
+            font-weight: 500;
         }
+    }
+    .table-show{
+        height: calc(100% - 60px);
+    }
+}
 </style>

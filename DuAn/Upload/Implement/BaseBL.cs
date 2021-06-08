@@ -53,9 +53,22 @@ namespace Upload.Implement
         //Hàm insert chung
         public async Task<object> Insert(object param, Type curentType)
         {
+            await BeforeSave(param);
             var parameters = GetParameters(param, curentType);
-            var resul =  await _dBConnection.ExecuteAsync($"Proc_{curentType.Name}_Insert", parameters, commandType: CommandType.StoredProcedure);
+            var resul =  await _dBConnection.ExecuteScalarAsync<object>($"Proc_{curentType.Name}_Insert", parameters, commandType: CommandType.StoredProcedure);
+            if(resul != null)
+            {
+                await AfterSave(param);
+            }
             return resul;
+        }
+        public virtual async Task BeforeSave(object param)
+        {
+
+        }
+        public virtual async Task AfterSave(object param)
+        {
+
         }
         //Hàm sửa chung
         public async Task<object> Update(object param, Type curentType)

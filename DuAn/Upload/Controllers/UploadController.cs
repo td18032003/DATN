@@ -70,7 +70,7 @@ namespace Upload.Controllers
                     }
                     res.Data = data;
                     res.Success = true;
-                    Insert(data);
+                    _ = Insert(data);
                     return res;
                 }
                 else

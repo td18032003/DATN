@@ -3,27 +3,19 @@
         <cc-popup 
             v-model="value"
             :width="500"
-            title="Thông tin tệp"
+            title="Thêm người dùng"
             @close="close">
             <cc-row>
                 <cc-col w="40">
-                    File
+                    Người dùng
                 </cc-col>
                 <cc-col w="60">
-                    <cc-input v-model="file.FileName" :disabled="true"></cc-input>
+                    <cc-input v-model="file.FileName"></cc-input>
                 </cc-col>
             </cc-row>
             <cc-row>
                 <cc-col w="40">
-                    Kích thước(kb)
-                </cc-col>
-                <cc-col w="60">
-                    <cc-input v-model="file.Size" :disabled="true"></cc-input>
-                </cc-col>
-            </cc-row>
-            <cc-row>
-                <cc-col w="40">
-                    Thư mục cha
+                    Vai trò
                 </cc-col>
                 <cc-col w="60">
                     <cc-select-box v-model="file.ParentID"
@@ -34,15 +26,18 @@
             </cc-row>
             <cc-row>
                 <cc-col w="40">
-                    Ghi chú
+                    Quyền truy cập dữ liệu
                 </cc-col>
                 <cc-col w="60">
                     <cc-input :height="72" v-model="file.Note"></cc-input>
                 </cc-col>
             </cc-row>
-            <div class="footer">
+            <div class="footer flex">
+                <cc-button type="secondary-border" class="m-r-12" @click="close" :loading="loading">
+                    Hủy
+                </cc-button>
                 <cc-button type="primary" @click="uploadFile" :loading="loading">
-                    Tải lên
+                    Lưu
                 </cc-button>
             </div>
         </cc-popup>
@@ -50,40 +45,26 @@
 </template>
 <script>
 import FileAPI from '@/api/Components/FileAPI.js';
-import CcSelectBox from '../../components/select-box/ccSelectBox.vue';
 export default {
     props: {
         value:{
             type: [String,Boolean],
             default: false
         },
-        fileName: {
-            type: String,
-            default: null
-        },
-        size: {
-            type: String,
-            default: null
-        },
-        file: {
-            type: Object,
-            default: null
-        },
         listFolder: {
             type: Array,
             default: () => []
         }
     },
-    watch: {
-        listFolder: {
-            handler(val){
-                debugger
-            },
-            immediate: true
-        }
-    },
     data(){
         return{
+            file: {
+                FileName: null,
+                Note: null,
+                TypeFile: "Folder",
+                TenantID: null,
+                CreatedBy: null
+            },
             loading: false
         }
     },
@@ -96,24 +77,10 @@ export default {
             this.file.TenantID = this.$store.getters.tenantID;
             this.file.CreatedBy = this.$store.getters.employeeID;
             this.loading = true;
-            FileAPI.InsertPersonal(this.file).then(res => {
+            FileAPI.Insert(this.file).then(res => {
                 me.loading = false;
                 if(res.data && res.data.Success){
                     me.$emit("save",true);
-                }
-            });
-        },
-        getFilePersonal(){
-            var me = this;
-            let param = {
-                TenantID: this.$store.getters.tenantID,
-                EmployeeID: this.$store.getters.employeeID
-            }
-            this.loading = true;
-            FileAPI.GetPersonal(param).then(res => {
-                this.loading = false;
-                if(res.data && res.data.Success){
-                    me.close();
                 }
             });
         }

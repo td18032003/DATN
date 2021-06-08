@@ -50,6 +50,8 @@ namespace Upload
                 o.MemoryBufferThreshold = int.MaxValue;
             });
 
+            services.AddElasticsearch(Configuration);
+
             services.AddTransient<IBaseUploadBL, BaseUploadBL>();
             services.AddTransient<IBaseBL, BaseBL>();
             services.AddTransient<IOrganizationUnitBL, OrganizationUnitBL>();

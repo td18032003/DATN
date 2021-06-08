@@ -11,5 +11,9 @@ namespace Upload.Interface
         public Task<object> GetAllPersonal(Dictionary<string, object> param);
 
         public object UploadFile(IFormFile file);
+
+        public Task<object> InsertPersonal(Models.File file);
+
+        public Task<List<Models.File>> SearchFile(string param);
     }
 }
