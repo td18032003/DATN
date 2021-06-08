@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace Upload.Interface
 {
-    public interface IFileBL : IBaseBL
+    public interface IEmployeeBL : IBaseBL
     {
-        public Task<object> GetAllPersonal(Dictionary<string, object> param);
-
-        public object UploadFile(IFormFile file);
     }
 }

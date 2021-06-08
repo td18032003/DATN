@@ -20,7 +20,8 @@ export default {
                     Name: "Không thời hạn",
                     Active: true,
                     Router: "/share/indefinite",
-                    Icon: "icon-delete"
+                    // Icon: "icon-delete"
+                    Icon:""
                 },
                 {
                     ID: 2,

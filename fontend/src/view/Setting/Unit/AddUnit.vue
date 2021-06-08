@@ -69,9 +69,11 @@ export default {
             this.$emit("close",false);
         },
         async save(){
-            debugger
             if(this.organization.ParentID){
                 this.organization.ParentID = [...this.organization.ParentID].join("");
+            }
+            else{
+                this.organization.ParentID = 0;
             }
             var res = await OrganizationUnitAPI.Insert(this.organization);
             if(res.data && res.data.Success){

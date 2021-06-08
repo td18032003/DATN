@@ -11,7 +11,7 @@ namespace Upload.Controllers
 {
     public class BaseController<T> : Controller
     {
-        public object BL = null;
+        public IBaseBL BL = null;
         public Type curentType = null;
         public IBaseBL _baseBL;
         public string _tableName = null;

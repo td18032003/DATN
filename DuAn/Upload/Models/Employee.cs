@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace HRManagement.Model.Models
+namespace Upload
 {
     public class Employee
     {
@@ -12,6 +12,6 @@ namespace HRManagement.Model.Models
 
         public string EmployeeName { get; set; }
 
-
+        public int MyProperty { get; set; }
     }
 }

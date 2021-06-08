@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Upload.Interface
 {
-    public interface IBaseUploadBL
+    public interface IBaseUploadBL: IBaseBL
     {
         public object ReadExcel(string path);
 

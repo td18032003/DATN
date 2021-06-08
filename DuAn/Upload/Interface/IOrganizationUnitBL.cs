@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Upload.Interface
 {
-    public interface IOrganizationUnitBL
+    public interface IOrganizationUnitBL : IBaseBL
     {
     }
 }

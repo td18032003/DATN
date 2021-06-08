@@ -11,7 +11,16 @@
                     <cc-button type="primary m-r-12" icon="icon-plus-white" @click="uploadFile">Tải tệp</cc-button>
                     <input type="file" ref="file" style="display: none" @change="choseFile">
                     <cc-button type="primary m-r-12" icon="icon-plus-white" @click="openAddFolder">Tạo thư mục</cc-button>
-                    <cc-icon type="primary-border m-r-12" icon="icon-filter"></cc-icon>
+                    <cc-icon type="primary-border m-r-12" icon="icon-filter" @handleClick="openFilter()"></cc-icon>
+                    <div v-if="isFilter" class="filter-elastic">
+                        <div class="filter-title">
+                            Tìm kiếm toàn văn
+                        </div>
+                        <div class="filter-search">
+                            <cc-input :placeholderInput="'Nhập văn bản'"></cc-input>
+                            <cc-button type="primary m-r-12" @click="filterSearch">Tìm kiếm</cc-button>
+                        </div>
+                    </div>
                     <div class="flex type">
                         <div class="type-show" :class="[{'active': typeshow == 1}]" @click="typeshow = 1">
                             <div class="icon-list-block"></div>
@@ -73,6 +82,8 @@ import PopupUploadFile from "./PopupUploadFile";
 import AddFolder from "./AddFolder";
 import FileAPI from '@/api/Components/FileAPI.js';
 import Preview from '../Base/Preview';
+import CcInput from '../../components/input/ccInput.vue';
+import CcButton from '../../components/button/ccButton.vue';
 export default {
     components: {
         sidebar,
@@ -128,7 +139,8 @@ export default {
             activeAddFolder: false,
             loading: false,
             srcLink: null,
-            showPreview: false
+            showPreview: false,
+            isFilter: false
         }
     },
     created(){
@@ -201,6 +213,12 @@ export default {
         showPreviewFile(item){
             this.srcLink = item.Path;
             this.showPreview = true;
+        },
+        openFilter() {
+            this.isFilter = !this.isFilter
+        },
+        filterSearch() {
+            console.log("click");
         }
     }
 }
@@ -226,6 +244,27 @@ export default {
             .tilte{
                 font-weight: 500;
                 font-size: 18px;
+            }
+            .filter-elastic {
+                -webkit-box-shadow: -2px 2px 1px 0px rgba(247,247,247,1);
+                -moz-box-shadow: -2px 2px 1px 0px rgba(247,247,247,1);
+                box-shadow: -2px 2px 1px 0px rgba(247,247,247,1);
+                width: 200px;
+                height: 300px;
+                position: absolute;
+                top: 61px;
+                z-index: 999999;
+                background-color: #ffffff;
+                padding: 15px;
+                right: 0;
+                .filter-search {
+                    margin-top: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: space-between;
+                    height: 80%;
+                }
             }
         }
         .content{
