@@ -34,10 +34,10 @@ namespace Upload.Implement
 
         public async Task<object> InsertPersonal(Models.File file)
         {
-            var res = Insert(file, typeof(Models.File));
-            if(res.Result.ToString() != "0")
+            var res = await Insert(file, typeof(Models.File));
+            if(res.ToString() != "0")
             {
-                file.FileID = int.Parse(res.Result.ToString());
+                file.FileID = int.Parse(res.ToString());
                 _ = SaveSingleAsync(file);
             }
             return res;
