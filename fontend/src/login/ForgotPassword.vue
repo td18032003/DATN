@@ -54,7 +54,7 @@ export default {
     .box-login {
         display: flex;
         flex-direction: column;
-        width: 33%;
+        width: 450px;
         background-color: #ffffff;
         border-radius: 10px;
         padding: 25px;

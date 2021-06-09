@@ -101,6 +101,11 @@ export default new Router({
       path: '/forgot-password',
       name: 'ForgotPassword',
       component:  () => import('../login/ForgotPassword')
+    },
+    {
+      path: '/change-password',
+      name: 'ChangePassword',
+      component:  () => import('../login/ChangePassword')
     }
   ]
 })

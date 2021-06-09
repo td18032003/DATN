@@ -67,9 +67,13 @@ $link-icon1: url("../assets/icon/Icon.svg");
 //Hàng 5
 @include setIcon('icon-import',24px,24px,#2962FF,-24px,-96px,$link-icon1);
 @include setIconWithDefaultColor('icon-export',24px,24px,-24px,-96px,$link-icon1);
+@include setIconWithDefaultColor('icon-eye-show',24px,24px,-216px,-96px,$link-icon1);
 
 //Hàng 7
 @include setIconWithDefaultColor('icon-list-block',24px,24px,-216px,-144px,$link-icon1);
+
+//Hàng 9
+@include setIconWithDefaultColor('icon-eye-hide',24px,24px,-48px,-192px,$link-icon1);
 
 //Hàng 16
 @include setIconWithDefaultColor('icon-dismissed',24px,24px,-264px,-376px,$link-icon1);

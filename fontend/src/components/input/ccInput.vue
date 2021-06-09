@@ -17,6 +17,9 @@
             height="100%"
             @value-changed="valueChanged"
         />
+        <div v-if="iconTails" class="icon-input-tails" @click="clickIconTail">
+            <div :class="iconTails"></div>
+        </div>
     </div>
 </template>
 <script>
@@ -39,6 +42,10 @@ export default {
             default: null
         },
         icon: {
+            Type: String,
+            default: null
+        },
+        iconTails: {
             Type: String,
             default: null
         },
@@ -69,6 +76,9 @@ export default {
         },
         handlekeyup(e){
           this.$emit('handlekeyup',this.value);  
+        },
+        clickIconTail() {
+            this.$emit("clickIcon")
         }
     }
 }
@@ -96,6 +106,11 @@ export default {
         position: absolute;
         top: 6px;
         left: 6px;
+    }
+    .icon-input-tails {
+        position: absolute;
+        top: 6px;
+        right: 6px;
     }
     .dx-state-disabled .dx-widget, .dx-state-disabled.dx-widget{
         opacity: unset;

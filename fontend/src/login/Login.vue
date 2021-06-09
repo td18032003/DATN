@@ -15,7 +15,7 @@
                     </div>
                     <div class="line-input">
                         <label for="" class="label-input">Mật khẩu</label>
-                        <cc-input :placeholderInput="placeholderPassword" />
+                        <cc-input :mode="mode1" :placeholderInput="placeholderPassword" :iconTails="icon1" @clickIcon="clickIcon()" />
                     </div>
                     <div class="line-tool">
                         <div class="item-tool">Quên mật khẩu</div>
@@ -36,7 +36,22 @@ export default {
     data() {
         return {
             placeholderUsername:"Tài khoản",
-            placeholderPassword: "Mật khẩu"
+            placeholderPassword: "Mật khẩu",
+            mode1: 'password',
+            icon1: 'icon-eye-hide',
+            typeInput1 : false
+        }
+    },
+    methods: {
+        clickIcon() {
+            this.typeInput1 = !this.typeInput1;
+            if(this.typeInput1) {
+                this.mode1 = 'text';
+                this.icon1 = 'icon-eye-show';
+            } else {
+                this.mode1 = 'password';
+                this.icon1 = 'icon-eye-hide'
+            }
         }
     }
 }
@@ -55,7 +70,7 @@ export default {
     .box-login {
         display: flex;
         flex-direction: column;
-        width: 33%;
+        width: 450px;
         background-color: #ffffff;
         border-radius: 10px;
         padding: 25px;

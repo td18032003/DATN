@@ -10,23 +10,19 @@
                 </div>
                 <form action="">
                     <div class="line-input">
-                        <label for="" class="label-input">Tên đăng nhập</label>
-                        <cc-input :placeholderInput="placeholderUsername" />
-                    </div>
-                    <div class="line-input">
-                        <label for="" class="label-input">Mật khẩu</label>
+                        <label for="" class="label-input">Mật khẩu cũ</label>
                         <cc-input :mode="mode1" :placeholderInput="placeholderPassword" :iconTails="icon1" @clickIcon="clickIcon(0)" />
                     </div>
                     <div class="line-input">
-                        <label for="" class="label-input">Nhập lại mật khẩu</label>
+                        <label for="" class="label-input">Mật khẩu mới</label>
                         <cc-input :mode="mode2" :placeholderInput="placeholderPassword" :iconTails="icon2" @clickIcon="clickIcon(1)" />
                     </div>
-                    <div class="line-tool">
-                        <div class="item-tool">Quên mật khẩu</div>
-                        <div class="item-tool">Đăng nhập</div>
+                    <div class="line-input">
+                        <label for="" class="label-input">Nhập lại mật khẩu mới</label>
+                        <cc-input :mode="mode3" :placeholderInput="placeholderPassword" :iconTails="icon3" @clickIcon="clickIcon(2)" />
                     </div>
                     <div class="line-submit">
-                        <button class="btn-common-primary">Đăng ký</button>
+                        <button class="btn-common-primary">Đổi mật khẩu</button>
                     </div>
                 </form>
             </div>
@@ -41,40 +37,56 @@ export default {
         return {
             placeholderUsername:"Tài khoản",
             placeholderPassword: "Mật khẩu",
-            placeholderRePassword: "Nhập lại mật khẩu",
-            typeInput1 : false,
+            typeInput1: false,
             typeInput2: false,
+            typeInput3: false,
             mode1: 'password',
             mode2: 'password',
+            mode3: 'password',
             icon1: 'icon-eye-hide',
-            icon2: 'icon-eye-hide'
+            icon2: 'icon-eye-hide',
+            icon3: 'icon-eye-hide'
         }
     },
     methods: {
         clickIcon(val) {
-            switch(val) {
-                case 0: 
+            switch(val){
+                case 0:
                     this.typeInput1 = !this.typeInput1;
-                    if(this.typeInput1) {
+                    if(this.typeInput1){
                         this.mode1 = 'text';
                         this.icon1 = 'icon-eye-show';
-                    } else {
+                    }
+                    else{
                         this.mode1 = 'password';
                         this.icon1 = 'icon-eye-hide';
                     }
                 break;
-                case 1: 
-                     this.typeInput2 = !this.typeInput2;
-                    if(this.typeInput2) {
+                case 1:
+                    this.typeInput2 = !this.typeInput2;
+                    if(this.typeInput2){
                         this.mode2 = 'text';
                         this.icon2 = 'icon-eye-show';
-                    } else {
+                    }
+                    else{
                         this.mode2 = 'password';
                         this.icon2 = 'icon-eye-hide';
                     }
+                break;
+                case 2:
+                    this.typeInput3 = !this.typeInput3;
+                    if(this.typeInput3){
+                        this.mode3 = 'text';
+                        this.icon3 = 'icon-eye-show';
+                    }
+                    else{
+                        this.mode3 = 'password';
+                        this.icon3 = 'icon-eye-hide';
+                    }
+                break;
             }
         }
-    },
+    }
 }
 </script>
 <style lang="scss" scoped>
