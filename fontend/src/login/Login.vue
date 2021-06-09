@@ -10,7 +10,7 @@
                 </div>
                 <form action="">
                     <div class="line-input">
-                        <label for="" class="label-input">Email</label>
+                        <label for="" class="label-input">Tên đăng nhập</label>
                         <cc-input :placeholderInput="placeholderUsername" />
                     </div>
                     <div class="line-input">
