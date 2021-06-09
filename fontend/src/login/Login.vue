@@ -19,7 +19,7 @@
                         <div class="item-tool">Sign up</div>
                     </div>
                     <div class="line-submit">
-                        <cc-button>Sign in</cc-button>
+                        <button class="btn-common-primary">Sign in</button>
                     </div>
                 </form>
             </div>
@@ -27,12 +27,10 @@
     </div>
 </template>
 <script>
-import CcButton from '../components/button/ccButton.vue'
 import ccInput from '../components/input/ccInput.vue'
 export default {
     components: { ccInput },
     data() {
-        CcButton
         return {
             placeholderUsername:"Enter your username",
             placeholderPassword: "Enter your password"
@@ -47,12 +45,17 @@ export default {
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: #ffffff;
+    // background-color: #ffffff;
+    background-image: url('../assets/image/banner1.jpg');
+    background-size: cover;
 }
     .box-login {
         display: flex;
         flex-direction: column;
         width: 33%;
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 25px;
     }
         .title-login {
             width: 100%;
@@ -62,7 +65,7 @@ export default {
             line-height: 1;
             --tw-text-opacity: 1;
             color: rgba(16, 185, 129, var(--tw-text-opacity));
-            margin-bottom: 3.5rem/* 56px */;
+            margin-bottom: 2rem;
         }
         .line-input {
             display: flex;
@@ -90,5 +93,29 @@ export default {
             margin-top: 2.5rem/* 40px */;
             margin-bottom: 2.5rem/* 40px */;
             justify-content: center;
+        }
+        .btn-common-primary {
+            position: relative;
+            height: 36px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            outline: none;
+            min-width: 80px;
+            width: 100%;
+            cursor: pointer;
+            color: #ffffff;
+            background-color: #2962FF;
+            border: none;
+            &:hover{
+                background-color: #2979FF;
+            }
+            &:active{
+                background-color: #304FFE;
+            }
         }
 </style>
