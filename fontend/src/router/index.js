@@ -91,6 +91,16 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component:  () => import('../login/Login')
+    },
+    {
+      path: '/sign-up',
+      name: 'SignUp',
+      component:  () => import('../login/Signup')
+    },
+    {
+      path: '/forgot-password',
+      name: 'ForgotPassword',
+      component:  () => import('../login/ForgotPassword')
     }
   ]
 })
