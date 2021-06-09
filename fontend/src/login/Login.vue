@@ -3,7 +3,10 @@
         <div class="page-login">
             <div class="box-login">
                 <div class="title-login">
-                    Sign in
+                    <img src="../assets/icon/sidebar/logo-2.png" width="100" height="100" alt="">
+                    <div style="margin-top: 20px">
+                        QUẢN LÝ TÀI LIỆU
+                    </div>
                 </div>
                 <form action="">
                     <div class="line-input">
@@ -11,15 +14,15 @@
                         <cc-input :placeholderInput="placeholderUsername" />
                     </div>
                     <div class="line-input">
-                        <label for="" class="label-input">Password</label>
+                        <label for="" class="label-input">Mật khẩu</label>
                         <cc-input :placeholderInput="placeholderPassword" />
                     </div>
                     <div class="line-tool">
-                        <div class="item-tool">Forgot password</div>
-                        <div class="item-tool">Sign up</div>
+                        <div class="item-tool">Quên mật khẩu</div>
+                        <div class="item-tool">Đăng ký</div>
                     </div>
                     <div class="line-submit">
-                        <button class="btn-common-primary">Sign in</button>
+                        <button class="btn-common-primary">Đăng nhập</button>
                     </div>
                 </form>
             </div>
@@ -32,8 +35,8 @@ export default {
     components: { ccInput },
     data() {
         return {
-            placeholderUsername:"Enter your username",
-            placeholderPassword: "Enter your password"
+            placeholderUsername:"Tài khoản",
+            placeholderPassword: "Mật khẩu"
         }
     }
 }
@@ -63,8 +66,7 @@ export default {
             font-weight: 700;
             font-size: 3rem/* 48px */;
             line-height: 1;
-            --tw-text-opacity: 1;
-            color: rgba(16, 185, 129, var(--tw-text-opacity));
+            color: #2962FF;
             margin-bottom: 2rem;
         }
         .line-input {
