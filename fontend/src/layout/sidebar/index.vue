@@ -108,9 +108,9 @@ export default {
     },
     methods: {
         selectItem(e){
-
         },
         changeRouter(item){
+            localStorage.setItem("sidebarActive", item.Router)
             this.listOption.forEach(ele => {
                 if(ele.ID == item.ID){
                     ele.Active = true;
@@ -122,6 +122,7 @@ export default {
             this.$router.push("/home" + item.Router);
         },
         async getDataSource(){
+            let itemActive = localStorage.getItem("sidebarActive");
             let me = this;
             var res = await OrganizationUnitAPI.GetAll();
             if(res.data && res.data.Success){

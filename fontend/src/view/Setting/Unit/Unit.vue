@@ -80,9 +80,7 @@ export default {
             }
         },
         deleteUnit(item){
-            debugger
             this.$popup.confirmDelete("Xóa thư mục", "Bạn có chắc chắn muốn xóa thư mục <strong>" + item.OrganizationUnitName + "</strong> không?",this.deleteFile,item)
-            debugger
             // OrganizationUnitAPI.Delete(item.OrganizationUnitID).then(res => {
             //     if(res.data && res.data.Success){
             //         this.getAll();

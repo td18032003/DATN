@@ -104,12 +104,25 @@ export default {
             this.showDetail = false;
         },
         async getAll(){
-        var res = await EmployeeAPI.GetAll();
-        if(res.data && res.data.Success){
-            this.dataSource = res.data.Data;
-            console.log("employees", res.data.Data);
+            var res = await EmployeeAPI.GetAll();
+            if(res.data && res.data.Success){
+                this.dataSource = res.data.Data;
+                console.log("employees", res.data.Data);
+            }
+        },
+        confirmDelete(data) {
+            this.$popup.confirmDelete("Xóa nhân viên", "Bạn có chắc chắn muốn xóa nhân viên <strong>" + data.EmployeeName + "</strong> không?",this.deleteFile,data)
+        },
+        async deleteFile(data){
+            var me = this;
+            var res = await EmployeeAPI.Delete(data.EmployeeID);
+            if(res.data && res.data.Success){
+                me.getAll();
+            }
+            else{
+
+            }
         }
-    }
     }
 }
 </script>

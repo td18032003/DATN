@@ -73,6 +73,7 @@ export default {
          * Đổi router - cvcuong
          */
         changeRoute(item){
+            localStorage.removeItem("sidebarActive");
             this.listHeader.forEach(ele => {
                 if(ele.ID == item.ID){
                     ele.Active = true;

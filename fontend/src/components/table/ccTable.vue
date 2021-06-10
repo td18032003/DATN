@@ -117,7 +117,6 @@ export default {
     },
     methods: {
         test(data){
-            debugger
         },
         /**
          * Hàm bắt sự kiện sửa tại dòng

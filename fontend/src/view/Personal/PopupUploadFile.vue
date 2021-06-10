@@ -76,7 +76,6 @@ export default {
     watch: {
         listFolder: {
             handler(val){
-                debugger
             },
             immediate: true
         }
