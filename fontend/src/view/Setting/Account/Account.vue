@@ -18,12 +18,14 @@
                     @clickDelete="confirmDelete">
                 </ccTable>
             </div>
+            <cc-loading v-show="loading" width="40"></cc-loading>
         </div>
         <AddAccount v-if="activePopup" v-model="activePopup"></AddAccount>
     </div>
 </template>
 <script>
 import AddAccount from "./AddAccount.vue";
+import UserAPI from '@/api/Components/UserAPI.js';
 export default {
     components: {
         AddAccount
@@ -33,13 +35,6 @@ export default {
             dataSource: [],
             listHeader: [
                 {
-                    DataField: "EmployeeCode",
-                    Caption: "Mã nhân viên",
-                    DataTyle: "text",
-                    Fixed: true,
-                    MinWidth: 150
-                },
-                {
                     DataField: "EmployeeName",
                     Caption: "Tên nhân viên",
                     DataTyle: "text",
@@ -47,14 +42,14 @@ export default {
                     MinWidth: 150
                 },
                 {
-                    DataField: "OrganizationUnitName",
-                    Caption: "Đơn vị",
+                    DataField: "Email",
+                    Caption: "Email",
                     DataTyle: "text",
                     MinWidth: 150
                 },
                 {
-                    DataField: "Email",
-                    Caption: "Email",
+                    DataField: "Phone",
+                    Caption: "SĐT",
                     DataTyle: "text",
                     MinWidth: 150
                 },
@@ -71,8 +66,12 @@ export default {
                     MinWidth: 150
                 }
             ],
-            activePopup: false
+            activePopup: false,
+            loading: false
         }
+    },
+    created(){
+        this.GetAllAccount();
     },
     methods: {
         openAdd(){
@@ -80,6 +79,16 @@ export default {
         },
         closeForm(){
             this.activePopup = false;
+        },
+        GetAllAccount(){
+            this.loading = true;
+            var me = this;
+            UserAPI.GetAll().then(res => {
+                me.loading = false;
+                if(res.data && res.data.Success){
+                    me.dataSource = res.data.Data;
+                }
+            });
         }
     }
 }
