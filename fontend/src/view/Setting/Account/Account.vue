@@ -27,7 +27,7 @@
             </div>
             <cc-loading v-show="loading" width="40"></cc-loading>
         </div>
-        <AddAccount v-if="activePopup" v-model="activePopup"></AddAccount>
+        <AddAccount v-if="activePopup" v-model="activePopup" @save="GetAllAccount"></AddAccount>
     </div>
 </template>
 <script>
@@ -88,6 +88,7 @@ export default {
             this.activePopup = false;
         },
         GetAllAccount(){
+            this.activePopup = false;
             this.loading = true;
             var me = this;
             UserAPI.GetAll().then(res => {
