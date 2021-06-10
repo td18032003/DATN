@@ -14,8 +14,15 @@
                 <ccTable 
                     :listHeader="listHeader" 
                     :dataSource="dataSource"
+                    :showEdit="true"
+                    :showDownload="false"
                     @clickEdit="openEdit"
                     @clickDelete="confirmDelete">
+                <template #EmployeeName="{data}">
+                    <div class="flex align-center">
+                        <cc-avatar class="m-r-8" :employee="data"></cc-avatar>{{data.EmployeeName}}
+                    </div>
+                </template>
                 </ccTable>
             </div>
             <cc-loading v-show="loading" width="40"></cc-loading>

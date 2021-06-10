@@ -7,7 +7,8 @@
         <div v-else class="avatar" 
             :style="[{'width': isNaN(width) ? width : width + 'px'},
             {'height': isNaN(height) ? height : height + 'px'},
-            {'background-color': color}]"
+            {'background-color': color},
+            {'font-size': fontSize}]"
         >
             {{name}}
         </div>
@@ -27,6 +28,10 @@ export default {
         height: {
             type: [String,Number],
             default: '30px'
+        },
+        fontSize: {
+            type: [String,Number],
+            default: '16px'
         }
     },
     data() {

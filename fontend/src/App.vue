@@ -22,7 +22,9 @@ export default {
     if(token == null || token == "undefined"){
       this.$router.push("/login");
     }
-    await this.GetUserInfo();
+    else{
+      await this.GetUserInfo();
+    }
   },
   methods: {
     async GetUserInfo(){
