@@ -34,6 +34,6 @@ namespace Upload
 
         public int Status { get; set; }
 
-        public Guid TenantID { get; set; }
+        public Guid? TenantID { get; set; }
     }
 }

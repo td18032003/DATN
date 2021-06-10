@@ -9,17 +9,18 @@
             </div>
             <div class="flex align-center">
                 <cc-button class="m-r-12" type="secondary" @click="back">Hủy</cc-button>
-                <cc-button @click="save">Lưu</cc-button>
+                <cc-button @click="save" :loading="loading">Lưu</cc-button>
             </div>
         </div>
         <div class="view-info">
             <cc-group>
                 <cc-row>
                     <cc-col w="100" class="avatar-block">
-                        <img v-if="employee.Avatar" class="avatar" :src="employee.Avatar"/>
-                        <div v-else class="avatar">
+                        <img v-if="employee.Avatar" class="avatar" :src="employee.Avatar" @click="uploadAvatar"/>
+                        <div v-else class="avatar" @click="uploadAvatar">
                             <div class="icon-user-big"></div>
                         </div>
+                        <input type="file" accept="image/png, image/jpeg" ref="file" style="display: none" @change="choseFile">
                     </cc-col>
                 </cc-row>
                  <!-- <cc-row>
@@ -37,13 +38,13 @@
                         Tên nhân viên
                     </cc-col>
                     <cc-col w="30" class="m-r-60">
-                        <cc-input v-model="employee.EmployeeCode"></cc-input>
+                        <cc-input v-model="employee.EmployeeName"></cc-input>
                     </cc-col>
                     <cc-col w="15">
                         Mã nhân viên
                     </cc-col>
                     <cc-col w="30">
-                        <cc-input v-model="employee.EmployeeName"></cc-input>
+                        <cc-input v-model="employee.EmployeeCode"></cc-input>
                     </cc-col>
                 </cc-row>
                 <cc-row>
@@ -52,13 +53,13 @@
                     </cc-col>
                     <cc-col w="30" class="m-r-60">
                         <cc-select-box v-model="employee.Gender" :dataSource="listGender"
-                        @selected="selectedFile"></cc-select-box>
+                        @selected="selectedGender"></cc-select-box>
                     </cc-col>
                     <cc-col w="15">
                         Ngày sinh
                     </cc-col>
                     <cc-col w="30">
-                        <cc-date v-model="employee.Birth"></cc-date>
+                        <cc-date v-model="employee.BirthDay"></cc-date>
                     </cc-col>
                 </cc-row>
                 <cc-row>
@@ -80,13 +81,13 @@
                         Đơn vị
                     </cc-col>
                     <cc-col w="30" class="m-r-60">
-                        <cc-organization-unit v-model="employee.OrganizationUnitID"></cc-organization-unit>
+                        <cc-organization-unit v-model="employee.OrganizationUnitID" @selected="selectedOrg"></cc-organization-unit>
                     </cc-col>
                     <cc-col w="15">
                         Chức vụ
                     </cc-col>
                     <cc-col w="30">
-                        <cc-input v-model="employee.JobPoisitionID"></cc-input>
+                        <cc-input v-model="employee.JobPoisitionName" ></cc-input>
                     </cc-col>
                 </cc-row>
                 <cc-row>
@@ -103,15 +104,31 @@
                         <cc-input v-model="employee.Note"></cc-input>
                     </cc-col>
                 </cc-row>
+                <cc-row v-if="employeeMaster != null">
+                    <cc-col w="15">
+                        Trạng thái
+                    </cc-col>
+                    <cc-col w="30" class="m-r-60">
+                        <cc-select-box v-model="employee.Status"
+                        :dataSource="listStatus"
+                        displayField="StatusName"
+                        valueField="StatusID"></cc-select-box>
+                    </cc-col>
+                </cc-row>
             </cc-group>
         </div>
     </div>
 </template>
 <script>
-import OrganizationUnitAPI from "@/api/Components/OrganizationUnitAPI.js";
-import CcSelectBox from '../../../components/select-box/ccSelectBox.vue';
-import CCDate from '../../../components/date/CCDate.vue';
+import EmployeeAPI from "@/api/Components/EmployeeAPI.js";
+import FileAPI from '@/api/Components/FileAPI.js';
 export default {
+    props:{
+        employeeMaster: {
+            type: Object,
+            default: null
+        }
+    },
     data(){
         return{
             listGender : ["Nam","Nữ", "Khác"],
@@ -129,38 +146,74 @@ export default {
                 OrganizationUnitName: null,
                 JobPoisitionID: null,
                 JobPoisitionName: null,
+                Status: 1
             },
-            organization: {
-                OrganizationUnitID: null,
-                OrganizationUnitName: null,
-                ParentID: null,
-                Address: null,
-                Code: null,
-                Status: 0,
-                Note: null,
-                TenantID: "e806ada4-8745-11eb-aa29-18dbf2054f66"
-            }
+            loading: false,
+            isEdit: false,
+            listStatus: [
+                {
+                    StatusID: 0,
+                    StatusName: "Không hoạt động"
+                },
+                {
+                    StatusID: 1,
+                    StatusName: "Đang hoạt động"
+                }
+            ]
+        }
+    },
+    watch: {
+        employeeMaster: {
+            handler(val){
+                if(val){
+                    this.employee = val;
+                    this.isEdit = true;
+                }
+            },
+            immediate: true
         }
     },
     methods: {
+        selectedGender(val){
+            this.employee.Gender = val;
+        },
+        selectedOrg(val){
+            this.employee.OrganizationUnitID = val.OrganizationUnitID;
+            this.employee.OrganizationUnitName = val.OrganizationUnitName;
+        },
         back(){
             this.$emit("close",false);
         },
         async save(){
-            if(this.organization.ParentID){
-                this.organization.ParentID = [...this.organization.ParentID].join("");
-            }
-            var res = await OrganizationUnitAPI.Insert(this.organization);
-            if(res.data && res.data.Success){
-                this.$emit("close", true);
+            this.loading = true;
+            if(this.isEdit){
+                var res = await EmployeeAPI.Update(this.employee);
+                this.loading = false;
+                if(res.data && res.data.Success){
+                    this.$emit("save", true);
+                }
             }
             else{
-                console.log();
+                var res = await EmployeeAPI.Insert(this.employee);
+                this.loading = false;
+                if(res.data && res.data.Success){
+                    this.$emit("save", true);
+                }
             }
         },
-        setCCCOde(val){
-            this.organization.Code = val;
-        }
+        uploadAvatar(){
+            this.$refs.file.click();
+        },
+        choseFile(event){
+            let fd = new FormData();
+            fd.append('file',event.target.files[0])
+            let me = this;
+            FileAPI.UploadFile(fd).then(res => {
+                if(res.data && res.data.Success){
+                    me.employee.Avatar = res.data.Data.Path;
+                }
+            }).catch(e => {});
+        },
     }
 }
 </script>

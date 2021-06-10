@@ -59,6 +59,8 @@ $link-icon1: url("../assets/icon/Icon.svg");
 //Hàng 3
 @include setIconWithDefaultColor('icon-back',24px,24px,-168px,-48px,$link-icon1);
 
+@include setIconWithDefaultColor('icon-edit',24px,24px,-192px,-48px,$link-icon1);
+
 //Hàng 4
 @include setIconWithDefaultColor('icon-delete',24px,24px,-240px,-72px,$link-icon1);
 

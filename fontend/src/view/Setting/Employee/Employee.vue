@@ -10,16 +10,28 @@
                     <cc-button type="primary " icon="icon-plus-white" @click="openAdd">Thêm</cc-button>
                 </div>
             </div>
-            <div class="view-table">
+            <div class="view-table" v-show="!loading">
                 <ccTable 
                     :listHeader="listHeader" 
                     :dataSource="dataSource"
-                    @clickEdit="openEdit"
+                    :showDownload="false"
+                    :showEdit="true"
+                    @rowClick="rowClick"
+                    @clickEdit="rowEdit"
                     @clickDelete="confirmDelete">
+                    <template #BirthDay="{data}">
+                        {{formatDate(data.BirthDay)}}
+                    </template>
+                    <template #EmployeeName="{data}">
+                        <div class="flex align-center">
+                            <cc-avatar class="m-r-8" :employee="data"></cc-avatar>{{data.EmployeeName}}
+                        </div>
+                    </template>
                 </ccTable>
             </div>
+            <cc-loading v-show="loading" width="40"></cc-loading>
         </div>
-        <AddEmployee v-if="showDetail" @close="closeForm"></AddEmployee>
+        <AddEmployee v-if="showDetail" @close="closeForm" @save="getAll" :employeeMaster="employee"></AddEmployee>
     </div>
 </template>
 <script>
@@ -90,13 +102,19 @@ export default {
                     MinWidth: 150
                 }
             ],
-            showDetail: false
+            showDetail: false,
+            loading: false,
+            employee: null
         }
     },
     async created() {
         await this.getAll();
     },
     methods: {
+        rowEdit(data){
+            this.employee = data;
+            this.showDetail = true;
+        },
         openAdd(){
             this.showDetail = true;
         },
@@ -104,14 +122,27 @@ export default {
             this.showDetail = false;
         },
         async getAll(){
+            this.employee = null;
+            this.showDetail = false;
+            this.loading = true;
             var res = await EmployeeAPI.GetAll();
             if(res.data && res.data.Success){
                 this.dataSource = res.data.Data;
-                console.log("employees", res.data.Data);
             }
+            this.loading = false;
         },
         confirmDelete(data) {
             this.$popup.confirmDelete("Xóa nhân viên", "Bạn có chắc chắn muốn xóa nhân viên <strong>" + data.EmployeeName + "</strong> không?",this.deleteFile,data)
+        },
+        formatDate(date){
+            if(date){
+                var todayTime = new Date(date);
+                var month = todayTime.getMonth() + 1;
+                var day = todayTime.getDate();
+                var year = todayTime.getFullYear();
+                return month + "/" + day + "/" + year;
+            }
+            return null;
         },
         async deleteFile(data){
             var me = this;

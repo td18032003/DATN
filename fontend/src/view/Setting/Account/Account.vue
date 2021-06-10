@@ -42,6 +42,12 @@ export default {
                     MinWidth: 150
                 },
                 {
+                    DataField: "OrganizationUnitName",
+                    Caption: "Đơn vị có quyền",
+                    DataTyle: "text",
+                    MinWidth: 150
+                },
+                {
                     DataField: "Email",
                     Caption: "Email",
                     DataTyle: "text",
@@ -56,12 +62,6 @@ export default {
                 {
                     DataField: "Password",
                     Caption: "Mật khẩu",
-                    DataTyle: "text",
-                    MinWidth: 150
-                },
-                {
-                    DataField: "Status",
-                    Caption: "Trạng thái",
                     DataTyle: "text",
                     MinWidth: 150
                 }

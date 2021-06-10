@@ -63,7 +63,7 @@ export default class BaseAPI{
     }
 
     async Update(data){
-        var res =  await Axios.post(this.api + this.controller + "/update", data);
+        var res =  await this.Post("/update", data);
         return res;
     }
 
