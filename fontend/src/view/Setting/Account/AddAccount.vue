@@ -82,7 +82,7 @@ export default {
     },
     methods: {
         selectEmployee(val){
-            this.
+            this.user.EmployeeID = val.EmployeeID;
         },
         GetRole(){
             var me = this;
