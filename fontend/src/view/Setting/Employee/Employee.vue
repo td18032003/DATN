@@ -16,7 +16,6 @@
                     :dataSource="dataSource"
                     :showDownload="false"
                     :showEdit="true"
-                    @rowClick="rowClick"
                     @clickEdit="rowEdit"
                     @clickDelete="confirmDelete">
                     <template #BirthDay="{data}">
@@ -107,13 +106,14 @@ export default {
             employee: null
         }
     },
-    async created() {
+    created() {
+        debugger
         var check = this.$checkPermission.checkPermission("Employee", "View", this);
         if(!check){
             this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
             this.$router.push("/home/Unit");
         }
-        await this.getAll();
+        this.getAll();
     },
     methods: {
         rowEdit(data){
