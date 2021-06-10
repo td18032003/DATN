@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <router-view></router-view>
+    <router-view v-if="isGetUser"></router-view>
   </div>
 </template>
 
@@ -8,6 +8,11 @@
 import UserAPI from '@/api/Components/UserAPI.js' ;
 export default {
   name: 'App',
+  data(){
+    return{
+      isGetUser: false
+    }
+  },
   async created(){
     var token = this.$store.getters.token;
     if(localStorage.getItem('token') != null && localStorage.getItem('token') != "undefined"){
@@ -27,6 +32,7 @@ export default {
         if(listRole){
           this.$store.dispatch('common/setListRole',listRole);
         }
+        this.isGetUser= true;
       }
     }
   }
