@@ -50,6 +50,7 @@ namespace Upload
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
             });
+            services.AddHttpContextAccessor();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
             services.AddElasticsearch(Configuration);
@@ -60,6 +61,8 @@ namespace Upload
             services.AddTransient<IFileBL, FileBL>();
             services.AddTransient<IEmployeeBL, EmployeeBL>();
             services.AddTransient<IUserBL, UserBL>();
+            services.AddTransient<IRoleBL, RoleBL>();
+            services.AddTransient<IRoleDetailBL, RoleDetailBL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

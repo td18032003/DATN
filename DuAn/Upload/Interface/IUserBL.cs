@@ -9,5 +9,7 @@ namespace Upload.Interface
     public interface IUserBL : IBaseBL
     {
         public Task<AuthenticateResponse> Authenticate(AuthenticateRequest model);
+
+        public Task<object> UserInfo();
     }
 }

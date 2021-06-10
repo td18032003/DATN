@@ -2,7 +2,9 @@
     <div>
         <DxCheckBox
             :text="text"
-            v-model="value"
+            :disabled="disabled"
+            v-model="valueX"
+            @valueChanged="valueChanged"
         />
     </div>
 </template>
@@ -21,12 +23,31 @@ export default {
         text: {
             type: String,
             default: null
+        },
+        disabled: {
+            type: [String, Boolean],
+            default: false
         }
     },
     data() {
         return {
-            checkBoxValue: null
+            checkBoxValue: null,
+            valueX: false
         };
+    },
+    watch: {
+        value: {
+            handler(val){
+                this.valueX = val;
+            },
+            immediate: true
+        }
+    },
+    methods: {
+        valueChanged(e){
+            this.$emit("input", this.value);
+            this.$emit("changed", this.value);
+        }
     }
 }
 </script>

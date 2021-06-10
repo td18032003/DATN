@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Upload.Entity;
 using Upload.Interface;
 using Upload.Models;
 
@@ -30,6 +31,22 @@ namespace Upload.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             return Ok(response);
+        }
+
+        [HttpGet("user-info")]
+        [Models.Authorize]
+        public async Task<ServiceResponse> UserInfo()
+        {
+            ServiceResponse res = new ServiceResponse() { };
+            try
+            {
+                res.Data = await (this.BL as IUserBL).UserInfo();
+            }
+            catch (Exception ex)
+            {
+                return _baseBL.Error(ex);
+            }
+            return res;
         }
     }
 }

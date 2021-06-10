@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Upload.Interface;
+using Upload.Models;
 
 namespace Upload.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EmployeeController : BaseController<Employee>
     {
         public EmployeeController(IEmployeeBL employeeBL, IBaseBL baseBL) : base(baseBL)

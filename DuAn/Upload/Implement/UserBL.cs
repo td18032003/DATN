@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -16,10 +17,12 @@ namespace Upload.Implement
     public class UserBL : BaseBL, IUserBL
     {
         private readonly AppSettings _appSettings;
+        private readonly IRoleDetailBL _roleDetailBL;
 
-        public UserBL(IConfiguration configuration, IOptions<AppSettings> appSettings) : base(configuration)
+        public UserBL(IConfiguration configuration, IOptions<AppSettings> appSettings, IHttpContextAccessor httpContextAccessor, IRoleDetailBL roleDetailBL) : base(configuration, httpContextAccessor)
         {
             _appSettings = appSettings.Value;
+            _roleDetailBL = roleDetailBL;
         }
 
         public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model)
@@ -50,6 +53,21 @@ namespace Upload.Implement
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public async Task<object> UserInfo()
+        {
+            Dictionary<string, object> userInfo = new Dictionary<string, object>();
+            var user = (User)_httpContextAccessor.HttpContext.Items["User"];
+            Employee employee = (Employee)await GetByID<Employee>(user.EmployeeID.ToString(),typeof(Employee),"employee");
+            userInfo.Add("EmployeeID", user.EmployeeID);
+            userInfo.Add("EmployeeName", employee.EmployeeName);
+            userInfo.Add("OrganizationUnitID", user.OrganizationUnitID);
+            userInfo.Add("OrganizationUnitName", user.OrganizationUnitName);
+            //Lấy ra danh sách quyền
+            var listRole = await _roleDetailBL.GetListRoleDetail(user.RoleID.ToString());
+            userInfo.Add("ListRole", listRole);
+            return userInfo;
         }
     }
 }

@@ -27,7 +27,9 @@ namespace Upload.Models
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
             if (token != null)
-                attachUserToContext(context, userBL, token);
+            {
+                await attachUserToContext(context, userBL, token);
+            }
 
             await _next(context);
         }

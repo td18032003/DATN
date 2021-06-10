@@ -12,6 +12,7 @@ namespace Upload.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrganizationUnitController : BaseController<OrganizationUnit>
     {
         public OrganizationUnitController(IOrganizationUnitBL organizationUnitBL, IBaseBL baseBL) : base(baseBL)

@@ -2,7 +2,8 @@ const state = {
     tenantID: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     userID: "",
     employeeID: 1,
-    token: null
+    token: null,
+    listRole: null
   }
   
   const mutations = {
@@ -10,8 +11,10 @@ const state = {
       state.tenantID = val;
     },
     setToken(state,val){
-      debugger
       state.token = val;
+    },
+    setListRole(state,val){
+      state.listRole = val;
     }
   }
   
@@ -20,8 +23,10 @@ const state = {
       commit('setTenantID',val)
     },
     setToken({ commit },val){
-      debugger
       commit('setToken',val)
+    },
+    setListRole({ commit },val){
+      commit('setListRole',val)
     }
   }
   

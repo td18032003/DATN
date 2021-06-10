@@ -7,5 +7,8 @@ class UserAPI extends BaseAPI {
     async Login(param){
         return await this.PostNotAuthen("/authenticate",param);
     }
+    async GetUserInfo(){
+        return await this.Get("/user-info");
+    }
 }
 export default new UserAPI();

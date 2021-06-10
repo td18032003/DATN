@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using System;
@@ -18,11 +19,15 @@ namespace Upload.Implement
         public string _connectionString;
         public IDbConnection _dBConnection;
         public string _tableName = null;
-        public BaseBL(IConfiguration configuration)
+        public IHttpContextAccessor _httpContextAccessor;
+        public Guid _tenantID;
+
+        public BaseBL(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _connectionString = _configuration.GetConnectionString("ConnectDB");
             _dBConnection = new MySqlConnection(_connectionString);
+            _httpContextAccessor = httpContextAccessor;
         }
         public void SetTableName(string tableName)
         {
@@ -31,7 +36,8 @@ namespace Upload.Implement
         //Hàm get all
         public virtual async Task<object> GetAll<T>(Type curentType)
         {
-            var resul = await _dBConnection.QueryAsync<T>($"SELECT * FROM {_tableName};", commandType: CommandType.Text);
+            var user = (User)_httpContextAccessor.HttpContext.Items["User"];
+            var resul = await _dBConnection.QueryAsync<T>($"SELECT * FROM {_tableName} WHERE TenantID = '{user.TenantID}';", commandType: CommandType.Text);
             return resul;
         }
         //Hàm paging
@@ -57,27 +63,32 @@ namespace Upload.Implement
         //Hàm insert chung
         public async Task<object> Insert(object param, Type curentType)
         {
-            await BeforeSave(param);
+            var user = (User)_httpContextAccessor.HttpContext.Items["User"];
+            BeforeSave(param);
             var parameters = GetParameters(param, curentType);
+            parameters.Add("v_TenantID", user.TenantID);
             var resul =  await _dBConnection.ExecuteScalarAsync<object>($"Proc_{curentType.Name}_Insert", parameters, commandType: CommandType.StoredProcedure);
             if(resul != null)
             {
-                await AfterSave(param);
+                AfterSave(param);
             }
             return resul;
         }
-        public virtual async Task BeforeSave(object param)
+        public virtual void BeforeSave(object param)
         {
 
         }
-        public virtual async Task AfterSave(object param)
+        public virtual void AfterSave(object param)
         {
 
         }
         //Hàm sửa chung
         public async Task<object> Update(object param, Type curentType)
         {
+            var user = (User)_httpContextAccessor.HttpContext.Items["User"];
+            BeforeSave(param);
             var parameters = GetParameters(param, curentType);
+            parameters.Add("v_TenantID", user.TenantID);
             var resul = await _dBConnection.ExecuteAsync($"Proc_{curentType.Name}_Update", parameters, commandType: CommandType.StoredProcedure);
             return resul;
         }
@@ -86,7 +97,15 @@ namespace Upload.Implement
         {
             foreach(var item in param)
             {
-                await Update(item, curentType);
+                var state = curentType.GetProperties().Where(x => x.Name == "State").FirstOrDefault();
+                if (state != null && int.Parse(state.GetValue(item).ToString()) == 2)
+                {
+                    await Update(item, curentType);
+                }
+                else
+                {
+                    await Insert(item, curentType);
+                }
             };
             return param;
         }
@@ -132,6 +151,16 @@ namespace Upload.Implement
         {
             var resul = await _dBConnection.QueryAsync<T>(sql, commandType: CommandType.Text);
             return resul.FirstOrDefault();
+        }
+        public async Task<object> QueryCommandTexListtAsync<T>(string sql)
+        {
+            var resul = await _dBConnection.QueryAsync<T>(sql, commandType: CommandType.Text);
+            return resul;
+        }
+        public async Task<object> ExecuteAsync(string sql)
+        {
+            var resul = await _dBConnection.ExecuteAsync(sql, commandType: CommandType.Text);
+            return resul;
         }
         //Hàm xử lý trả về khi lỗi
         public ServiceResponse Error(Exception e)
