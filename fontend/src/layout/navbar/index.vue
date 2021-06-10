@@ -16,7 +16,11 @@
         </div>
         <div class="block-right">
             <div class="ico-notify m-r-8" title="Thông báo">
-                <div :class="isNotify?'icon-notify-active':'icon-notify'" @click="toggleNotify()"></div>
+                <div :class="isNotify?'icon-notify-active':'icon-notify'" @click="toggleNotify()">
+                    <div class="number-noitify">
+                        1
+                    </div>
+                </div>
                 <div v-if="isNotify" class="notify-detail">
                     <cc-group>
                             <cc-row>
@@ -266,6 +270,17 @@ export default {
         }
     }
     .ico-notify {
+        .number-noitify {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #ee0033;
+            color: #ffffff;
+            position: absolute;
+            top: 7px;
+            right: -5px;
+            text-align: center;
+        }
         .avatar-employee {
             min-width: 30px;
             height: 30px;

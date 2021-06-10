@@ -13,7 +13,8 @@
                     <cc-select-box v-model="user.EmployeeID"
                         :dataSource="listEmployee"
                         displayField="EmployeeName"
-                        valueField="EmployeeID"></cc-select-box>
+                        valueField="EmployeeID"
+                        @selected="selectEmployee"></cc-select-box>
                 </cc-col>
             </cc-row>
             <cc-row>
@@ -36,10 +37,10 @@
                 </cc-col>
             </cc-row>
             <div class="footer flex">
-                <cc-button type="secondary-border" class="m-r-12" @click="close" :loading="loading">
+                <cc-button type="secondary-border" class="m-r-12" @click="close">
                     Hủy
                 </cc-button>
-                <cc-button type="primary" @click="uploadFile" :loading="loading">
+                <cc-button type="primary" @click="save" :loading="loading">
                     Lưu
                 </cc-button>
             </div>
@@ -47,7 +48,7 @@
     </div>
 </template>
 <script>
-import FileAPI from '@/api/Components/FileAPI.js';
+import UserAPI from '@/api/Components/UserAPI.js' ;
 import EmployeeAPI from '../../../api/Components/EmployeeAPI';
 import RoleAPI from '@/api/Components/RoleAPI.js';
 export default {
@@ -80,6 +81,9 @@ export default {
         }
     },
     methods: {
+        selectEmployee(val){
+            this.user.EmployeeID = val.EmployeeID;
+        },
         GetRole(){
             var me = this;
             RoleAPI.GetAll().then(res => {
@@ -91,15 +95,12 @@ export default {
         close(){
             this.$emit("input",false);
         },
-        uploadFile(){
-            var me = this;
-            this.file.TenantID = this.$store.getters.tenantID;
-            this.file.CreatedBy = this.$store.getters.employeeID;
+        save(){
             this.loading = true;
-            FileAPI.Insert(this.file).then(res => {
-                me.loading = false;
+            var me = this;
+            UserAPI.Insert(this.user).then(res => {
                 if(res.data && res.data.Success){
-                    me.$emit("save",true);
+                    this.$emit("save",false);
                 }
             });
         },

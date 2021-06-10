@@ -20,9 +20,12 @@ export default {
       this.$store.dispatch('common/setToken', token);
     }
     if(token == null || token == "undefined"){
+      this.isGetUser = true;
       this.$router.push("/login");
     }
-    await this.GetUserInfo();
+    else{
+      await this.GetUserInfo();
+    }
   },
   methods: {
     async GetUserInfo(){
