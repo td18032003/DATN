@@ -52,12 +52,14 @@ $link-icon1: url("../assets/icon/Icon.svg");
 
 //Hàng 2
 @include setIconWithDefaultColor('icon-notify',24px,24px,0px,-24px,$link-icon1);
+@include setIcon('icon-notify-active',24px,24px,#2962FF,0px,-24px,$link-icon1);
 @include setIcon('icon-plus-white',24px,24px,#ffffff,-24px,-24px,$link-icon1);
 @include setIconWithDefaultColor('icon-search',24px,24px,-48px,-24px,$link-icon1);
 
 @include setIconWithDefaultColor('icon-filter',24px,24px,-216px,-24px,$link-icon1);
 //Hàng 3
 @include setIconWithDefaultColor('icon-back',24px,24px,-168px,-48px,$link-icon1);
+@include setIconWithDefaultColor('icon-edit',24px,24px,-192px,-48px,$link-icon1);
 
 @include setIconWithDefaultColor('icon-edit',24px,24px,-192px,-48px,$link-icon1);
 
