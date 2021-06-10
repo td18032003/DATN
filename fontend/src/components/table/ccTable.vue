@@ -121,6 +121,8 @@ export default {
         }
     },
     methods: {
+        test(data){
+        },
         /**
          * Hàm bắt sự kiện sửa tại dòng
          */

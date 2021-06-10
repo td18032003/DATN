@@ -7,10 +7,12 @@
             @close="close">
             <cc-row>
                 <cc-col w="40">
-                    Người dùng
+                    Tên người dùng
                 </cc-col>
                 <cc-col w="60">
-                    <cc-input v-model="file.FileName"></cc-input>
+                    <cc-select-box v-model="file.FileName"
+                        :dataSource="employees"
+                        valueField="employees"></cc-select-box>
                 </cc-col>
             </cc-row>
             <cc-row>
@@ -45,6 +47,7 @@
 </template>
 <script>
 import FileAPI from '@/api/Components/FileAPI.js';
+import EmployeeAPI from '../../../api/Components/EmployeeAPI';
 export default {
     props: {
         value:{
@@ -65,7 +68,8 @@ export default {
                 TenantID: null,
                 CreatedBy: null
             },
-            loading: false
+            loading: false,
+            employees : []
         }
     },
     methods: {
@@ -83,7 +87,20 @@ export default {
                     me.$emit("save",true);
                 }
             });
-        }
+        },
+        async getAllEmployee(){
+            var res = await EmployeeAPI.GetAll();
+            if(res.data && res.data.Success){
+                for(let  i = 0; i < res.data.Data.length; i++) {
+                    this.employees.push(res.data.Data[i].EmployeeName)
+                }
+                console.log("employees", this.employees);
+
+            }
+        },
+    },
+    created() {
+        this.getAllEmployee();
     }
 }
 </script>

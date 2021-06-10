@@ -92,8 +92,7 @@ $link-icon1: url("../assets/icon/Icon.svg");
 
 //Hàng 11
 @include setIconWithDefaultColor('icon-help',24px,24px,-24px,-240px,$link-icon1);
-
-
+@include setIconWithDefaultColor('icon-singout',24px,24px,-72px,-240px,$link-icon1);
 
 //icon to
 @include setIconWithDefaultColor('icon-user-big',48px,48px,-72px,-576px,$link-icon1);

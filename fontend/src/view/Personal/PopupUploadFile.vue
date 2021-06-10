@@ -74,6 +74,11 @@ export default {
         }
     },
     watch: {
+        listFolder: {
+            handler(val){
+            },
+            immediate: true
+        }
 
     },
     data(){

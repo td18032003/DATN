@@ -37,6 +37,16 @@
             </cc-row>
             <cc-row>
                 <cc-col w="40">
+                    Tên người dùng
+                </cc-col>
+                <cc-col w="60">
+                    <cc-select-box v-model="file.Employee"
+                        :dataSource="employees"
+                        valueField="employees"></cc-select-box>
+                </cc-col>
+            </cc-row>
+            <cc-row>
+                <cc-col w="40">
                     Ghi chú
                 </cc-col>
                 <cc-col w="60">
@@ -53,6 +63,7 @@
 </template>
 <script>
 import FileAPI from '@/api/Components/FileAPI.js';
+import EmployeeAPI from '../../../api/Components/EmployeeAPI'
 import CcSelectBox from '../../../components/select-box/ccSelectBox.vue';
 import CcRadio from '../../../components/radio/ccRadio.vue';
 export default {
@@ -96,15 +107,18 @@ export default {
                 Size: null,
                 OrganizationUnitID: null,
                 OrganizationUnitName: null,
-                NoteOrganizationUnit: null
+                NoteOrganizationUnit: null,
+                Employee:null
             },
             fileResponse: null,
             listFile: [],
-            dataSource: []
+            dataSource: [],
+            employees: []
         }
     },
     created(){
         this.getFilePersonal();
+        this.getAllEmployee();
     },
     methods: {
         selectedFile(val){
@@ -168,7 +182,17 @@ export default {
                     me.listFile = me.dataSource.filter(x => x.TypeFile != "Folder");
                 }
             });
-        }
+        },
+        async getAllEmployee(){
+            var res = await EmployeeAPI.GetAll();
+            if(res.data && res.data.Success){
+                for(let  i = 0; i < res.data.Data.length; i++) {
+                    this.employees.push(res.data.Data[i].EmployeeName)
+                }
+                console.log("employees", this.employees);
+
+            }
+        },
     }
 }
 </script>

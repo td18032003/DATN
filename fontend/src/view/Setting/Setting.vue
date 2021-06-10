@@ -41,6 +41,20 @@ export default {
                 },
             ]
         }
+    },
+    async created(){
+        let itemActive = localStorage.getItem("sidebarActive");
+        if(itemActive != "undefined" && itemActive != null) {
+            for(let i = 0; i < this.listSetting.length; i++) {
+                if(this.listSetting[i].Router == itemActive) {
+                    this.listSetting[i].Active = true;
+                }   else {
+                    this.listSetting[i].Active = false;
+                }            
+            }
+        } else {
+            this.listSetting[0].Active = true;
+        }
     }
 }
 </script>
