@@ -21,11 +21,58 @@
             <div class="ico-notify m-r-12" title="Help">
                 <div class="icon-help"></div>
             </div>
-            <img class="logo m-r-24" src="@/assets/icon/sidebar/user.svg"/>
+            <div class="profile">
+                <img class="logo m-r-24" src="@/assets/icon/sidebar/user.svg" @click="toggleProfile()"/>
+                <div v-if="isOpen" class="detail-profile">
+                    <div>
+                        <cc-group>
+                            <cc-row>
+                                <cc-col w="100" class="avatar-block">
+                                    <!-- <img v-if="employee.Avatar" class="avatar" :src="employee.Avatar"/> -->
+                                    <div class="avatar">
+                                        <div class="icon-user-big"></div>
+                                    </div>
+                                </cc-col>
+                            </cc-row>
+                             <cc-row>
+                                <cc-col w="100">
+                                    Linh Linh
+                                </cc-col>
+                            </cc-row>
+                            <cc-row class="justify-center">
+                                <cc-col w="100">
+                                    linhdemo99@gmail.com
+                                </cc-col>
+                            </cc-row>
+                            <cc-row>
+                                <cc-col w="100">
+                                    <cc-input :value="'Linh Linh'"></cc-input>
+                                </cc-col>
+                            </cc-row>
+                            <cc-row class="justify-center">
+                                <cc-col w="100">
+                                    <cc-icon type="btn-primary m-r-12" icon="icon-filter" @handleClick="changePassword()"></cc-icon> Đổi mật khẩu
+                                </cc-col>
+                            </cc-row>
+                            <cc-row>
+                                <cc-col w="100">
+                                    <cc-icon type="btn-primary m-r-12" icon="icon-singout" @handleClick="signout()"></cc-icon> Đăng xuất
+                                </cc-col>
+                            </cc-row>
+                        </cc-group>
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 </template>
 <script>
+import CcButton from '../../components/button/ccButton.vue';
+import ccRow from '../../components/group/ccRow.vue';
 export default {
     data(){
         return{
@@ -54,7 +101,8 @@ export default {
                     Router: "/setting",
                     Active: false
                 }
-            ]
+            ],
+            isOpen:false
         }
     },
     mounted(){
@@ -83,6 +131,15 @@ export default {
                 }
             })
             this.$router.push("/home" + item.Router);
+        },
+        toggleProfile() {
+            this.isOpen = !this.isOpen;
+        },
+        changePassword() {
+            console.log("changepassword");
+        },
+        signout() {
+            console.log("signout");
         }
     }
 }
@@ -160,6 +217,16 @@ export default {
     .active{
         color: #fff;
         background-color: #5884fd;
+    }
+    .profile {
+        position: relative;
+        .detail-profile {
+            position: absolute;
+            width: 300px;
+            height: 500px;
+            background-color: aliceblue;
+            right: 10px;
+        }
     }
 }
 </style>
