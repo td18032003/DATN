@@ -40,3 +40,5 @@ const ccRadio = () => import(/* webpackChunkName:'ccRadio' */ '@/components/radi
 Vue.component('ccRadio', ccRadio);
 const ccCheckBox = () => import(/* webpackChunkName:'ccCheckBox' */ '@/components/checkbox/ccCheckBox.vue');
 Vue.component('ccCheckBox', ccCheckBox);
+const ccAvatar = () => import(/* webpackChunkName:'ccAvatar' */ '@/components/avatar/ccAvatar.vue');
+Vue.component('ccAvatar', ccAvatar);

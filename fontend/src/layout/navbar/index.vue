@@ -9,14 +9,29 @@
                 Quản lý tài liệu
             </div>
             <div v-for="(item,index) in listHeader" :key="index">
-                <div class="item-navbar m-r-16" :class='{"active": item.Active}' @click="changeRoute(item)">
+                <div class="item-navbar m-r-16 pointer" :class='{"active": item.Active}' @click="changeRoute(item)">
                     {{item.Name}}
                 </div>
             </div>
         </div>
         <div class="block-right">
             <div class="ico-notify m-r-8" title="Thông báo">
-                <div class="icon-notify"></div>
+                <div :class="isNotify?'icon-notify-active':'icon-notify'" @click="toggleNotify()"></div>
+                <div v-if="isNotify" class="notify-detail">
+                    <cc-group>
+                            <cc-row>
+                                <cc-col w="100" class="avatar-block justify-center">
+                                    <!-- <img v-if="employee.Avatar" class="avatar" :src="employee.Avatar"/> -->
+                                    <div class="avatar flex">
+                                        <div class="avatar-employee"></div>
+                                        <div>
+                                            <span class="f-bold">Vũ Thị Linh </span> thắc mắc về phiếu lương tháng 5/2021
+                                        </div>
+                                    </div>
+                                </cc-col>
+                            </cc-row>
+                        </cc-group>
+                </div>
             </div>
             <div class="ico-notify m-r-12" title="Help">
                 <div class="icon-help"></div>
@@ -27,7 +42,7 @@
                     <div>
                         <cc-group>
                             <cc-row>
-                                <cc-col w="100" class="avatar-block">
+                                <cc-col w="100" class="avatar-block justify-center">
                                     <!-- <img v-if="employee.Avatar" class="avatar" :src="employee.Avatar"/> -->
                                     <div class="avatar">
                                         <div class="icon-user-big"></div>
@@ -35,12 +50,12 @@
                                 </cc-col>
                             </cc-row>
                              <cc-row>
-                                <cc-col w="100">
+                                <cc-col w="100" class="justify-center">
                                     Linh Linh
                                 </cc-col>
                             </cc-row>
-                            <cc-row class="justify-center">
-                                <cc-col w="100">
+                            <cc-row>
+                                <cc-col w="100" class="justify-center">
                                     linhdemo99@gmail.com
                                 </cc-col>
                             </cc-row>
@@ -49,20 +64,21 @@
                                     <cc-input :value="'Linh Linh'"></cc-input>
                                 </cc-col>
                             </cc-row>
-                            <cc-row class="justify-center">
+                            <cc-row>
                                 <cc-col w="100">
-                                    <cc-icon type="btn-primary m-r-12" icon="icon-filter" @handleClick="changePassword()"></cc-icon> Đổi mật khẩu
+                                    <div class="flex align-center pointer" @click="changePassword()">
+                                        <cc-icon type="m-r-12" icon="icon-edit"></cc-icon> <span style="margin-left: 15px">Đổi mật khẩu</span>
+                                    </div>
                                 </cc-col>
                             </cc-row>
                             <cc-row>
-                                <cc-col w="100">
-                                    <cc-icon type="btn-primary m-r-12" icon="icon-singout" @handleClick="signout()"></cc-icon> Đăng xuất
+                                <cc-col w="100" @click="signout()">
+                                    <div class="flex align-center pointer" @click="signout()">
+                                        <cc-icon type="m-r-12" icon="icon-singout"></cc-icon> <span style="margin-left: 15px">Đăng xuất</span>
+                                    </div>
                                 </cc-col>
                             </cc-row>
                         </cc-group>
-                    </div>
-                    <div>
-                        
                     </div>
                 </div>
             </div>
@@ -106,7 +122,8 @@ export default {
                     SubCode: "Setting"
                 }
             ],
-            isOpen:false
+            isOpen:false,
+            isNotify: false
         }
     },
     mounted(){
@@ -132,6 +149,8 @@ export default {
                     return;
                 }
             }
+            this.isOpen = false;
+            this.isNotify = false;
             localStorage.removeItem("sidebarActive");
             this.listHeader.forEach(ele => {
                 if(ele.ID == item.ID){
@@ -145,12 +164,17 @@ export default {
         },
         toggleProfile() {
             this.isOpen = !this.isOpen;
+            this.isNotify = false;
         },
         changePassword() {
             console.log("changepassword");
         },
         signout() {
             console.log("signout");
+        },
+        toggleNotify() {
+            this.isNotify = !this.isNotify;
+            this.isOpen = false;
         }
     }
 }
@@ -234,10 +258,34 @@ export default {
         .detail-profile {
             position: absolute;
             width: 300px;
-            height: 500px;
-            background-color: aliceblue;
+            background-color: #ffffff;
             right: 10px;
+            -webkit-box-shadow: 2px 2px 2px 0px rgba(201,201,201,1);
+            -moz-box-shadow: 2px 2px 2px 0px rgba(201,201,201,1);
+            box-shadow: 2px 2px 2px 0px rgba(201,201,201,1);
         }
     }
+    .ico-notify {
+        .avatar-employee {
+            min-width: 30px;
+            height: 30px;
+            background-color: #5884fd;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .notify-detail 
+        {
+            position: absolute;
+            width: 300px;
+            background-color: #ffffff;
+            top: 50px;
+            right: 10px;
+            z-index: 99;
+            -webkit-box-shadow: 2px 2px 2px 0px rgba(201,201,201,1);
+            -moz-box-shadow: 2px 2px 2px 0px rgba(201,201,201,1);
+            box-shadow: 2px 2px 2px 0px rgba(201,201,201,1);
+        }
+    }
+    
 }
 </style>

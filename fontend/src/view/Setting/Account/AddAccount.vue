@@ -10,9 +10,10 @@
                     Tên người dùng
                 </cc-col>
                 <cc-col w="60">
-                    <cc-select-box v-model="file.FileName"
-                        :dataSource="employees"
-                        valueField="employees"></cc-select-box>
+                    <cc-select-box v-model="user.EmployeeID"
+                        :dataSource="listEmployee"
+                        displayField="EmployeeName"
+                        valueField="EmployeeID"></cc-select-box>
                 </cc-col>
             </cc-row>
             <cc-row>
@@ -20,10 +21,10 @@
                     Vai trò
                 </cc-col>
                 <cc-col w="60">
-                    <cc-select-box v-model="file.ParentID"
-                        :dataSource="listFolder"
-                        displayField="FileName"
-                        valueField="FileID"></cc-select-box>
+                    <cc-select-box v-model="user.RoleID"
+                        :dataSource="listRole"
+                        displayField="RoleName"
+                        valueField="RoleID"></cc-select-box>
                 </cc-col>
             </cc-row>
             <cc-row>
@@ -31,7 +32,7 @@
                     Quyền truy cập dữ liệu
                 </cc-col>
                 <cc-col w="60">
-                    <cc-input :height="72" v-model="file.Note"></cc-input>
+                    <cc-organization-unit v-model="user.OrganizationUnitID"></cc-organization-unit>
                 </cc-col>
             </cc-row>
             <div class="footer flex">
@@ -48,6 +49,7 @@
 <script>
 import FileAPI from '@/api/Components/FileAPI.js';
 import EmployeeAPI from '../../../api/Components/EmployeeAPI';
+import RoleAPI from '@/api/Components/RoleAPI.js';
 export default {
     props: {
         value:{
@@ -61,18 +63,31 @@ export default {
     },
     data(){
         return{
-            file: {
-                FileName: null,
-                Note: null,
-                TypeFile: "Folder",
-                TenantID: null,
-                CreatedBy: null
+            user: {
+                EmployeeName: null,
+                EmployeeID: null,
+                OrganizationUnitID: null,
+                OrganizationUnitName: null,
+                Email: null,
+                Phone: null,
+                RoleID: null,
+                RoleName: null,
+                Password: '12345678@Abc'
             },
             loading: false,
-            employees : []
+            listEmployee : [],
+            listRole: []
         }
     },
     methods: {
+        GetRole(){
+            var me = this;
+            RoleAPI.GetAll().then(res => {
+                if(res.data && res.data.Success){
+                    me.listRole = res.data.Data;
+                }
+            });
+        },
         close(){
             this.$emit("input",false);
         },
@@ -88,18 +103,17 @@ export default {
                 }
             });
         },
-        async getAllEmployee(){
-            var res = await EmployeeAPI.GetAll();
-            if(res.data && res.data.Success){
-                for(let  i = 0; i < res.data.Data.length; i++) {
-                    this.employees.push(res.data.Data[i].EmployeeName)
+        getAllEmployee(){
+            var me = this;
+            EmployeeAPI.GetAll().then(res => {
+                if(res.data && res.data.Success){
+                    me.listEmployee = res.data.Data;
                 }
-                console.log("employees", this.employees);
-
-            }
+            })
         },
     },
     created() {
+        this.GetRole();
         this.getAllEmployee();
     }
 }
