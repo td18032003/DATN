@@ -12,6 +12,7 @@ namespace Upload.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class FileController : BaseController<File>
     {
         public IFileBL _fileBL;

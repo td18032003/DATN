@@ -38,5 +38,7 @@ export default {
 }
 .dx-checkbox{
     width: 100%;
+    margin-right: 8px;
+
 }
 </style>

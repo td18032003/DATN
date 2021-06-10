@@ -1,8 +1,9 @@
 import Axios from 'axios';
-
+import store from "@/store/index.js";
 export default class BaseAPI{
-    constructor(){}
-
+    constructor(){
+        this.store = store;
+    }
     api = "https://localhost:44352/api/"
 
     controller = ""
@@ -12,7 +13,7 @@ export default class BaseAPI{
         return res
     }
 
-    async Post(route,data){
+    async PostNotAuthen(route,data){
         return await Axios.post(this.api + this.controller + route, data,
         {
             headers: { 'Content-Type': "application/json" }
@@ -21,6 +22,17 @@ export default class BaseAPI{
         }).catch(error => {
             console.log(error);
         });;
+    }
+    async Post(route,data){
+        debugger
+        return await Axios.post(this.api + this.controller + route, data,
+            {
+                headers: { Authorization: `Bearer ${this.store.getters.token}` }
+            }).then(response => {
+                return response;
+            }).catch(error => {
+                console.log(error);
+            });;
     }
 
     async Delete(id){

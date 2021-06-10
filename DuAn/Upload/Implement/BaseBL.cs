@@ -45,10 +45,14 @@ namespace Upload.Implement
             return resul;
         }
         //Hàm get id
-        public async Task<object> GetByID<T>(string id, Type curentType)
+        public async Task<object> GetByID<T>(string id, Type curentType, string tablename = null)
         {
+            if(tablename != null)
+            {
+                _tableName = tablename;
+            }
             var resul = await _dBConnection.QueryAsync<T>($"SELECT * FROM {_tableName} WHERE {curentType.Name}ID = '{id}';", commandType: CommandType.Text);
-            return resul;
+            return resul.FirstOrDefault();
         }
         //Hàm insert chung
         public async Task<object> Insert(object param, Type curentType)
@@ -123,6 +127,11 @@ namespace Upload.Implement
                 }
             }
             return parameters;
+        }
+        public async Task<object> QueryCommandTextAsync<T>(string sql)
+        {
+            var resul = await _dBConnection.QueryAsync<T>(sql, commandType: CommandType.Text);
+            return resul.FirstOrDefault();
         }
         //Hàm xử lý trả về khi lỗi
         public ServiceResponse Error(Exception e)

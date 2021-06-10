@@ -10,19 +10,19 @@
                 </div>
                 <form action="">
                     <div class="line-input">
-                        <label for="" class="label-input">Email</label>
-                        <cc-input :placeholderInput="placeholderUsername" />
+                        <label class="label-input">Email</label>
+                        <cc-input v-model="username" :placeholderInput="placeholderUsername" />
                     </div>
                     <div class="line-input">
-                        <label for="" class="label-input">Mật khẩu</label>
-                        <cc-input :placeholderInput="placeholderPassword" />
+                        <label class="label-input">Mật khẩu</label>
+                        <cc-input v-model="password" :placeholderInput="placeholderPassword" />
                     </div>
                     <div class="line-tool">
                         <div class="item-tool">Quên mật khẩu</div>
                         <div class="item-tool">Đăng ký</div>
                     </div>
                     <div class="line-submit">
-                        <button class="btn-common-primary">Đăng nhập</button>
+                        <button class="btn-common-primary" @click="login">Đăng nhập</button>
                     </div>
                 </form>
             </div>
@@ -30,13 +30,31 @@
     </div>
 </template>
 <script>
-import ccInput from '../components/input/ccInput.vue'
+import UserAPI from '@/api/Components/UserAPI.js' ;
 export default {
-    components: { ccInput },
+    components: {  },
     data() {
         return {
             placeholderUsername:"Tài khoản",
-            placeholderPassword: "Mật khẩu"
+            placeholderPassword: "Mật khẩu",
+            username: null,
+            password: null
+        }
+    },
+    methods: {
+        login(){
+            var param = {
+                Username: this.username,
+                Password: this.password
+            };
+            var me = this;
+            UserAPI.Login(param).then(res => {
+                if(res.data){
+                    localStorage.setItem('token', res.data.Token);
+                    me.$store.dispatch("common/setToken", res.data.Token);
+                    me.$router.push("/home");
+                }
+            });
         }
     }
 }

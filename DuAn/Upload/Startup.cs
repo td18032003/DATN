@@ -17,6 +17,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Upload.Implement;
 using Upload.Interface;
+using Upload.Models;
 
 namespace Upload
 {
@@ -49,6 +50,7 @@ namespace Upload
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
             });
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
             services.AddElasticsearch(Configuration);
 
@@ -57,6 +59,7 @@ namespace Upload
             services.AddTransient<IOrganizationUnitBL, OrganizationUnitBL>();
             services.AddTransient<IFileBL, FileBL>();
             services.AddTransient<IEmployeeBL, EmployeeBL>();
+            services.AddTransient<IUserBL, UserBL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +83,9 @@ namespace Upload
             app.UseRouting();
 
             app.UseAuthorization();
+
+            // custom jwt auth middleware
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

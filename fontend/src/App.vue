@@ -7,6 +7,16 @@
 <script>
 export default {
   name: 'App',
+  created(){
+    var token = this.$store.getters.token;
+    if(localStorage.getItem('token') != null && localStorage.getItem('token') != "undefined"){
+      token = localStorage.getItem('token');
+      this.$store.dispatch('common/setToken', token);
+    }
+    if(token == null || token == "undefined"){
+      this.$router.push("/login");
+    }
+  }
 }
 </script>
 

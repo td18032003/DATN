@@ -1,5 +1,5 @@
 <template>
-<div>
+<div style="height: 100%">
     <div v-if="!showDetail" class="role-view">
         <div class="header">
             <div class="title">
