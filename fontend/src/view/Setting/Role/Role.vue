@@ -56,6 +56,10 @@ export default {
         }
     },
     async created(){
+        var check = this.$checkPermission.checkPermission("Role", "View", this);
+        if(!check){
+            this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+        }
         await this.GetRole();
     },
     methods: {
@@ -85,6 +89,10 @@ export default {
             this.$popup.confirmDelete("Xóa vai trò", "Bạn có chắc chắn muốn xóa vai trò <strong>" + data.RoleName + "</strong> không?",this.deleteFile,data);
         },
         async deleteFile(data){
+            var check = this.$checkPermission.checkPermission("Role", "Delete", this);
+            if(!check){
+                this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+            }
             var res = await RoleAPI.DeleteRole(data.RoleID);
             if(res.data && res.data.Success){
                 this.GetRole();

@@ -71,6 +71,11 @@ export default {
         }
     },
     created(){
+        var check = this.$checkPermission.checkPermission("Account", "View", this);
+        if(!check){
+            this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+            this.$router.push("/home/Setting/Role");
+        }
         this.GetAllAccount();
     },
     methods: {

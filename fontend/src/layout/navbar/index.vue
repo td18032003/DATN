@@ -81,25 +81,29 @@ export default {
                     ID: 1,
                     Name: "Đơn vị",
                     Router: "/organization-unit",
-                    Active: true
+                    Active: true,
+                    SubCode: "OrganizationUnit"
                 },
                 {
                     ID: 2,
                     Name: "Cá nhân",
                     Router: "/personal",
-                    Active: false
+                    Active: false,
+                    SubCode: "Personal"
                 },
                 {
                     ID: 3,
                     Name: "Chia sẻ",
                     Router: "/share",
-                    Active: false
+                    Active: false,
+                    SubCode: "Shared"
                 },
                 {
                     ID: 4,
                     Name: "Thiết lập",
                     Router: "/setting",
-                    Active: false
+                    Active: false,
+                    SubCode: "Setting"
                 }
             ],
             isOpen:false
@@ -121,6 +125,13 @@ export default {
          * Đổi router - cvcuong
          */
         changeRoute(item){
+            if(item.SubCode != "Setting"){
+                var check = this.$checkPermission.checkPermission(item.SubCode, "View", this);
+                if(!check){
+                    this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+                    return;
+                }
+            }
             localStorage.removeItem("sidebarActive");
             this.listHeader.forEach(ele => {
                 if(ele.ID == item.ID){

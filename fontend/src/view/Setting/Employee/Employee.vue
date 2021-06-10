@@ -94,10 +94,19 @@ export default {
         }
     },
     async created() {
+        var check = this.$checkPermission.checkPermission("Employee", "View", this);
+        if(!check){
+            this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+            this.$router.push("/home/Unit");
+        }
         await this.getAll();
     },
     methods: {
         openAdd(){
+        var check = this.$checkPermission.checkPermission("Employee", "Add", this);
+        if(!check){
+            this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+        }    
             this.showDetail = true;
         },
         closeForm(){
@@ -111,6 +120,10 @@ export default {
             }
         },
         confirmDelete(data) {
+            var check = this.$checkPermission.checkPermission("Employee", "Delete", this);
+            if(!check){
+                this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+            }
             this.$popup.confirmDelete("Xóa nhân viên", "Bạn có chắc chắn muốn xóa nhân viên <strong>" + data.EmployeeName + "</strong> không?",this.deleteFile,data)
         },
         async deleteFile(data){

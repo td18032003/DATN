@@ -5,6 +5,7 @@
       :message="message"
       :type="type"
       position="bottom right"
+      @hidden="isVisible = false"
     />
   </div>
 </template>

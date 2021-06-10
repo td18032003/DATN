@@ -148,10 +148,18 @@ export default {
         }
     },
     created(){
+        var check = this.$checkPermission.checkPermission("Personal", "View", this);
+        if(!check){
+            this.$router.push("/home/share");
+        }
         this.getFilePersonal();
     },
     methods: {
         uploadFile(){
+            var check = this.$checkPermission.checkPermission("Personal", "Add", this);
+            if(!check){
+                this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+            }
             this.$refs.file.click();
         },
         openAddFolder(){
@@ -192,9 +200,17 @@ export default {
             this.getFilePersonal();
         },
         downloadFile(data){
+            var check = this.$checkPermission.checkPermission("Personal", "Download", this);
+            if(!check){
+                this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+            }
             window.location.assign(data.Path);
         },
         confirmDelete(data){
+            var check = this.$checkPermission.checkPermission("Personal", "Delete", this);
+            if(!check){
+                this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+            }
             this.$popup.confirmDelete("Xóa thư mục", "Bạn có chắc chắn muốn xóa thư mục <strong>" + data.FileName + "</strong> không?",this.deleteFile,data)
         },
         async deleteFile(data){

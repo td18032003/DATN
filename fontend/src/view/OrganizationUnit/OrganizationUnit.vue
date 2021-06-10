@@ -167,6 +167,7 @@ export default {
         var check = this.$checkPermission.checkPermission("OrganizationUnit", "View", this);
         if(!check){
             this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+            this.$router.push("/home/personal");
         }
         this.getAllOrg();
         this.getFilePersonal();
@@ -194,9 +195,19 @@ export default {
             this.organizationUnitName = val.OrganizationUnitName;
         },
         openAddFile(){
+            var check = this.$checkPermission.checkPermission("OrganizationUnit", "Add", this);
+            if(!check){
+                this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+                return;
+            }
             this.activePopup = true;
         },
         openAddFolder(){
+            var check = this.$checkPermission.checkPermission("OrganizationUnit", "Add", this);
+            if(!check){
+                this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+                return;
+            }
             this.activeAddFolder = true;
         },
         afterSave(){
@@ -252,6 +263,11 @@ export default {
             }
         },
         confirmDelete(data){
+            var check = this.$checkPermission.checkPermission("OrganizationUnit", "Delete", this);
+            if(!check){
+                this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+                return;
+            }
             this.$popup.confirmDelete("Xóa thư mục", "Bạn có chắc chắn muốn xóa thư mục <strong>" + data.FileName + "</strong> không?",this.deleteFile,data)
         },
         openFilter() {
