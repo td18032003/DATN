@@ -1,18 +1,25 @@
 import Axios from 'axios';
-
+import store from "@/store/index.js";
 export default class BaseAPI{
-    constructor(){}
-
+    constructor(){
+        this.store = store;
+    }
     api = "https://localhost:44352/api/"
 
     controller = ""
 
     async Get(route){
-        var res =  await Axios.get(this.api + this.controller + route)
-        return res
+        return await Axios.get(this.api + this.controller + route,
+            {
+                headers: { Authorization: `Bearer ${this.store.getters.token}` }
+            }).then(response => {
+                return response;
+            }).catch(error => {
+                console.log(error);
+            });
     }
 
-    async Post(route,data){
+    async PostNotAuthen(route,data){
         return await Axios.post(this.api + this.controller + route, data,
         {
             headers: { 'Content-Type': "application/json" }
@@ -22,14 +29,36 @@ export default class BaseAPI{
             console.log(error);
         });;
     }
+    async Post(route,data){
+        return await Axios.post(this.api + this.controller + route, data,
+            {
+                headers: { Authorization: `Bearer ${this.store.getters.token}`,
+                'Content-Type': "application/json" }
+            }).then(response => {
+                return response;
+            }).catch(error => {
+                console.log(error);
+            });
+    }
+
+    async DeleteBase(route){
+        return await Axios.delete(this.api + this.controller + route,
+            {
+                headers: { Authorization: `Bearer ${this.store.getters.token}` }
+            }).then(response => {
+                return response;
+            }).catch(error => {
+                console.log(error);
+            });
+    }
 
     async Delete(id){
-        var res =  await Axios.delete(this.api + this.controller + `/${id}`);
+        var res =  await this.DeleteBase(`/${id}`);
         return res;
     }
 
     async Insert(data){
-        var res =  await Axios.post(this.api + this.controller + "/insert", data);
+        var res =  await this.Post("/insert", data);
         return res;
     }
 
@@ -38,8 +67,15 @@ export default class BaseAPI{
         return res;
     }
 
+    async SaveList(data){
+        var res =  await this.Post("/save-list", data);
+        return res;
+    }
+    async GetByID(data){
+        return  await this.Get(`/getByID/${data}`);
+    }
     //Hàm get ALL
     async GetAll(){
-        return  await Axios.get(this.api + this.controller + "/get-all");
+        return  await this.Get("/get-all");
     }
 }

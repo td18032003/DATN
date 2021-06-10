@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -16,7 +17,8 @@ namespace Upload.Implement
 {
     public class BaseUploadBL : BaseBL, IBaseUploadBL
     {
-        public BaseUploadBL(IConfiguration configuration) : base(configuration){
+        public BaseUploadBL(IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : base(configuration, httpContextAccessor)
+        {
 
         }
         public ServiceResponse OnSuccess(object data)

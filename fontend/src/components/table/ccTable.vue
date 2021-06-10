@@ -9,6 +9,7 @@
             :columnAutoWidth="true"
             :hoverStateEnabled="true"
             height="100%"
+            @rowClick="rowClick"
         >
             <DxColumn
                 v-if="buttonMore"
@@ -46,6 +47,7 @@
                 :fixed="true"
                 fixed-position="right"
                 cell-template="btn-download"
+                v-if="showDownload"
             />
             <DxColumn
                 width="50"
@@ -60,7 +62,6 @@
             </template>
             <template #cell-template="{data}">
                <slot :name="data.column.dataField" :data="data.data">{{data.data[data.column.dataField]}}</slot>
-               <!-- <div @click="test(data)">aaa</div> -->
             </template>
             <template #btn-delete="{data}">
                 <div class="btn-icon-3 btn-none" @click="clickDelete(data)">
@@ -108,7 +109,11 @@ export default {
         showEdit: {
             type: [String,Boolean],
             default: false
-        }
+        },
+        showDownload: {
+            type: [String,Boolean],
+            default: true
+        },
     },
     data(){
         return{
@@ -128,6 +133,7 @@ export default {
          * Hàm bắt sự kiện sửa tại dòng
          */
         clickDelete(data){
+            event.stopPropagation();
             this.$emit("clickDelete", data.data);
         },
         /**
@@ -135,6 +141,9 @@ export default {
          */
         clickDownload(data){
             this.$emit("clickDownload", data.data);
+        },
+        rowClick(data){
+            this.$emit("rowClick", data.data);
         }
     }
 }

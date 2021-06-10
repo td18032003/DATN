@@ -80,12 +80,15 @@ export default {
             }
         },
         deleteUnit(item){
-            this.$popup.confirmDelete("Xóa thư mục", "Bạn có chắc chắn muốn xóa thư mục <strong>" + item.OrganizationUnitName + "</strong> không?",this.deleteFile,item)
-            // OrganizationUnitAPI.Delete(item.OrganizationUnitID).then(res => {
-            //     if(res.data && res.data.Success){
-            //         this.getAll();
-            //     }
-            // });
+            this.$popup.confirmDelete("Xóa thư mục", "Bạn có chắc chắn muốn xóa thư mục <strong>" + item.OrganizationUnitName + "</strong> không?",this.deleteFile,item);
+        },
+        deleteFile(){
+            var me = this;
+            OrganizationUnitAPI.Delete(item.OrganizationUnitID).then(res => {
+                if(res.data && res.data.Success){
+                    me.getAll();
+                }
+            });
         }
     },
     async created(){

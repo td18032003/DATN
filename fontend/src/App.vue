@@ -5,8 +5,31 @@
 </template>
 
 <script>
+import UserAPI from '@/api/Components/UserAPI.js' ;
 export default {
   name: 'App',
+  async created(){
+    var token = this.$store.getters.token;
+    if(localStorage.getItem('token') != null && localStorage.getItem('token') != "undefined"){
+      token = localStorage.getItem('token');
+      this.$store.dispatch('common/setToken', token);
+    }
+    if(token == null || token == "undefined"){
+      this.$router.push("/login");
+    }
+    await this.GetUserInfo();
+  },
+  methods: {
+    async GetUserInfo(){
+      var res = await UserAPI.GetUserInfo();
+      if(res.data && res.data.Success){
+        var listRole = res.data.Data.ListRole;
+        if(listRole){
+          this.$store.dispatch('common/setListRole',listRole);
+        }
+      }
+    }
+  }
 }
 </script>
 

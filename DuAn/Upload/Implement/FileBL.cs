@@ -26,7 +26,7 @@ namespace Upload.Implement
         public readonly IElasticClient _elasticClient;
         private readonly ILogger _logger;
 
-        public FileBL(IConfiguration configuration, IElasticClient elasticClient, ILogger<FileBL> logger) : base(configuration)
+        public FileBL(IConfiguration configuration, IElasticClient elasticClient, ILogger<FileBL> logger, IHttpContextAccessor httpContextAccessor) : base(configuration, httpContextAccessor)
         {
             _elasticClient = elasticClient;
             _logger = logger;

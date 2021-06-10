@@ -9,7 +9,7 @@ namespace Upload.Entity
     {
         public object OldData { get; set; }
 
-        public ModelState? State { get; set; }
+        public int? State { get; set; }
 
     }
 }

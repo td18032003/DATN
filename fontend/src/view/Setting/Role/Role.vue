@@ -1,5 +1,5 @@
 <template>
-<div>
+<div style="height: 100%">
     <div v-if="!showDetail" class="role-view">
         <div class="header">
             <div class="title">
@@ -10,20 +10,24 @@
                 <cc-button type="primary" icon="icon-plus-white" @click="openAdd">Thêm</cc-button>
             </div>
         </div>
-        <div class="table-show">
+        <div class="table-show" v-show="!loading">
             <cc-table
                 :listHeader="listHeader"
                 :dataSource="dataSource"
-
+                :showDownload="false"
+                @rowClick="rowClick"
+                @clickDelete="confirmDeleteRole"
             >
             </cc-table>
         </div>
+        <cc-loading v-show="loading" width="40"></cc-loading>
     </div>
-    <AddRole v-if="showDetail"></AddRole>
+    <AddRole v-if="showDetail" @close="showDetail = false" @save="GetRole" :roleMaster="role"></AddRole>
 </div>
 </template>
 <script>
 import AddRole from './AddRole.vue';
+import RoleAPI from '@/api/Components/RoleAPI.js';
 export default {
     components: { 
         AddRole
@@ -44,27 +48,47 @@ export default {
                     Caption: "Ghi chú"
                 }
             ],
-            dataSource: [
-                {
-                    RoleName: "Quản trị hệ thống",
-                    Note: "admin của chương trình"
-                },
-                {
-                    RoleName: "Quản lý nhân sự",
-                    Note: "Quản lý các phần trong chương trình"
-                },
-                {
-                    RoleName: "Nhân sự",
-                    Note: "Người dùng bình thường"
-                }
-            ],
+            dataSource: [],
             type: 1,
-            showDetail: false
+            showDetail: false,
+            loading: false,
+            role: null
         }
+    },
+    async created(){
+        await this.GetRole();
     },
     methods: {
         openAdd(){
+            this.role = null;
             this.showDetail = true;
+        },
+        rowClick(e){
+            this.role = e;
+            this.showDetail = true;
+        },
+        async GetRole(){
+            try{
+                this.showDetail = false;
+                this.loading = true;
+                var res = await RoleAPI.GetAll();
+                if(res.data && res.data.Success){
+                    this.loading = false;
+                    this.dataSource = res.data.Data;
+                }
+            }
+            catch(e){
+                console.log(e);
+            }
+        },
+        confirmDeleteRole(data){
+            this.$popup.confirmDelete("Xóa vai trò", "Bạn có chắc chắn muốn xóa vai trò <strong>" + data.RoleName + "</strong> không?",this.deleteFile,data);
+        },
+        async deleteFile(data){
+            var res = await RoleAPI.DeleteRole(data.RoleID);
+            if(res.data && res.data.Success){
+                this.GetRole();
+            }
         }
     }
 }
