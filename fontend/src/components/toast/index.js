@@ -1,20 +1,20 @@
 /**
  * plugin popup
  */
-import Permission from './ccPermission.vue';
-Permission.install = (Vue, options = {}) => {
+import Toast from './ccToast.vue';
+Toast.install = (Vue, options = {}) => {
     let MyComponent = Vue.extend({
         render: h=> {
-            return h(Permission,{
+            return h(Toast,{
                 props:{
                     options: options
                 },
-                ref: "Permission"
+                ref: "Toast"
             })
         }
     })
     var component = new MyComponent().$mount()
     document.body.appendChild(component.$el)
-    Vue.prototype.$checkPermission = component.$refs.Permission
+    Vue.prototype.$showToast = component.$refs.Toast
 }
-export default Permission;
+export default Toast;

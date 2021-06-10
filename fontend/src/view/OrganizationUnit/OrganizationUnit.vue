@@ -163,8 +163,12 @@ export default {
             }
         }
     },
-    async created(){
-        await this.getAllOrg();
+    created(){
+        var check = this.$checkPermission.checkPermission("OrganizationUnit", "View", this);
+        if(!check){
+            this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
+        }
+        this.getAllOrg();
         this.getFilePersonal();
     },
     methods: {
