@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
@@ -54,7 +53,7 @@ namespace Upload.Models
                 var userId = jwtToken.Claims.First(x => x.Type == "UserID").Value;
 
                 // attach user to context on successful jwt validation
-                context.Items["User"] = await userBL.GetByID<User>(userId.ToString(), typeof(User),"user");
+                context.Items["User"] = await userBL.GetByID<User>(userId.ToString(), typeof(User), "user");
             }
             catch
             {

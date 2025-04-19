@@ -11,6 +11,7 @@
                 <form action="">
                     <div class="line-input">
                         <label for="" class="label-input">Tên đăng nhập</label>
+                        <i class="zmdi zmdi-account material-icons-name"></i>
                         <cc-input v-model="username" :placeholderInput="placeholderUsername" />
                     </div>
                     <div class="line-input">
@@ -18,8 +19,8 @@
                         <cc-input :mode="mode1" v-model="password" :placeholderInput="placeholderPassword" :iconTails="icon1" @clickIcon="clickIcon()" />
                     </div>
                     <div class="line-tool">
-                        <div class="item-tool">Quên mật khẩu</div>
-                        <div class="item-tool">Đăng ký</div>
+                        <div class="item-tool"><RouterLink to="/forgot-password">Quên mật khẩu</RouterLink></div>
+                        <div class="item-tool"><RouterLink to="/sign-up">Đăng kí</RouterLink></div>
                     </div>
                     <div class="line-submit">
                         <button class="btn-common-primary" @click="login">Đăng nhập</button>
@@ -35,7 +36,7 @@ export default {
     components: {  },
     data() {
         return {
-            placeholderUsername:"Tài khoản",
+            placeholderUsername:"Email hoặc SĐT",
             placeholderPassword: "Mật khẩu",
             username: null,
             password: null,

@@ -21,6 +21,7 @@ namespace Upload
                 var settings = new ConnectionSettings(config["cloudId"], new BasicAuthenticationCredentials("elastic", config["password"]))
                 .DefaultIndex(defaultIndex).DefaultMappingFor<File>(m => m.IndexName("content"));
 
+
                 return new ElasticClient(settings);
             });
         }

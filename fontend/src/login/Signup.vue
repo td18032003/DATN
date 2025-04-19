@@ -22,8 +22,8 @@
                         <cc-input :mode="mode2" :placeholderInput="placeholderPassword" :iconTails="icon2" @clickIcon="clickIcon(1)" />
                     </div>
                     <div class="line-tool">
-                        <div class="item-tool">Quên mật khẩu</div>
-                        <div class="item-tool">Đăng nhập</div>
+                        <div class="item-tool"><RouterLink to="/forgot-password">Quên mật khẩu</RouterLink></div>
+                        <div class="item-tool"><RouterLink to="/login">Đăng nhập</RouterLink></div>
                     </div>
                     <div class="line-submit">
                         <button class="btn-common-primary">Đăng ký</button>

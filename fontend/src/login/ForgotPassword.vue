@@ -17,8 +17,8 @@
                         <label for="" class="label-input">Mật khẩu mới sẽ được gửi đến email đăng ký tài khoản.</label>
                     </div>
                     <div class="line-tool">
-                        <div class="item-tool" @>Đăng nhập</div>
-                        <div class="item-tool">Đăng ký</div>
+                        <div class="item-tool"><RouterLink to="/login">Đăng nhập</RouterLink></div>
+                        <div class="item-tool"><RouterLink to="/sign-up">Đăng kí</RouterLink></div>
                     </div>
                     <div class="line-submit">
                         <button class="btn-common-primary">Gửi</button>

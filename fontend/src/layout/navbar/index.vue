@@ -6,7 +6,7 @@
             </div>
             <img class="logo m-r-12" src="@/assets/icon/sidebar/logo-2.png"/>
             <div class="f-logo pointer m-r-24">
-                Quản lý tài liệu
+                DataLink
             </div>
             <div v-for="(item,index) in listHeader" :key="index">
                 <div class="item-navbar m-r-16 pointer" :class='{"active": item.Active}' @click="changeRoute(item)">
@@ -96,6 +96,7 @@ import ccRow from '../../components/group/ccRow.vue';
 export default {
     data(){
         return{
+            // Danh sách các mục trên thanh điều hướng
             listHeader: [
                 {
                     ID: 1,
@@ -126,11 +127,12 @@ export default {
                     SubCode: "Setting"
                 }
             ],
-            isOpen:false,
-            isNotify: false
+            isOpen:false,       // Để kiểm tra xem thông tin người dùng có mở hay không
+            isNotify: false     // Kiểm tra xem thông báo có mở hay không
         }
     },
     mounted(){
+        // Xác định mục nào trong thanh điều hướng đang hoạt động
         var fullpath = this.$route.fullPath;
         this.listHeader.forEach(item => {
             if(fullpath.indexOf(item.Router) != -1){
@@ -143,7 +145,7 @@ export default {
     },
     methods:{
         /**
-         * Đổi router - cvcuong
+         * Đổi router
          */
         changeRoute(item){
             if(item.SubCode != "Setting"){
@@ -167,6 +169,7 @@ export default {
             this.$router.push("/home" + item.Router);
         },
         toggleProfile() {
+            // Bật/tắt biểu mẫu thông tin người dùng
             this.isOpen = !this.isOpen;
             this.isNotify = false;
         },
@@ -177,6 +180,7 @@ export default {
             console.log("signout");
         },
         toggleNotify() {
+            // Bật/tắt chi tiết thông báo
             this.isNotify = !this.isNotify;
             this.isOpen = false;
         }

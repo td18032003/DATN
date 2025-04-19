@@ -28,7 +28,7 @@ namespace Upload.Implement
         public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model)
         {
             //Kiểm tra dưới database có tài khoản này không
-            string sql = $"SELECT * FROM user WHERE (Email = '{model.Username}' OR Phone = '{model.Username}') AND Password = {model.Password}";
+            string sql = $"SELECT * FROM user WHERE (Email = '{model.Username}' OR Phone = '{model.Username}') AND Password = '{model.Password}'";
             var res = await QueryCommandTextAsync<User>(sql);
 
             // return null if user not found
