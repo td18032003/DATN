@@ -85,7 +85,6 @@ CREATE TABLE File (
     FOREIGN KEY (OrganizationUnitID) REFERENCES Organization_Unit(OrganizationUnitID),
     FOREIGN KEY (CreatedBy) REFERENCES User(UserID)
 );
-
 -- Bảng RoleDetail
 CREATE TABLE Role_Detail (
     OldData VARCHAR(255),
@@ -110,6 +109,16 @@ CREATE TABLE FileInformation (
     Path VARCHAR(255),
     Content TEXT
 );
+
+ALTER TABLE Employee
+ADD EmployeeCode VARCHAR(50),
+ADD BirthDay DATETIME,
+ADD Gender VARCHAR(10),
+ADD Avatar VARCHAR(255),
+ADD JobPositionID INT,
+ADD JobPositionName VARCHAR(100),
+ADD Status INT;
+
 SELECT *FROM User;
 
 INSERT INTO Organization_Unit (OldData, State, OrganizationUnitName, ParentID, Code, Address, Status, Note, TenantID)
@@ -118,12 +127,7 @@ VALUES
 ('Dữ liệu cũ 2', 1, 'Phòng Vận hành', NULL, 'VH01', '456 Đường DEF', 1, 'Chú thích phòng Vận hành', '550e8400-e29b-41d4-a716-446655440001'),
 ('Dữ liệu cũ 3', 1, 'Phòng Nhân sự', NULL, 'NS01', '789 Đường GHI', 1, 'Chú thích phòng Nhân sự', '550e8400-e29b-41d4-a716-446655440002');
 
--- Nhập dữ liệu vào bảng Role
-INSERT INTO Role (OldData, State, RoleCode, RoleName, Note, TenantID)
-VALUES
-('Dữ liệu cũ 1', 1, 'ROLE_ADMIN', 'Quản trị', 'Chú thích vai trò quản trị', '550e8400-e29b-41d4-a716-446655440000'),
-('Dữ liệu cũ 2', 1, 'ROLE_USER', 'Người dùng', 'Chú thích vai trò người dùng', '550e8400-e29b-41d4-a716-446655440001'),
-('Dữ liệu cũ 3', 1, 'ROLE_GUEST', 'Khách', 'Chú thích vai trò khách', '550e8400-e29b-41d4-a716-446655440002');
+
 
 -- Nhập dữ liệu vào bảng Employee
 INSERT INTO Employee (EmployeeName, Email, Phone, OrganizationUnitID, OrganizationUnitName, TenantID)
@@ -182,13 +186,51 @@ Thiết kế giao diện thân thiện, phù hợp với mọi lứa tuổi ngư
 '
 WHERE FileID = 1;
 
+-- Nhập dữ liệu vào bảng Role
+INSERT INTO Role (OldData, State, RoleCode, RoleName, Note, TenantID)
+VALUES
+('Dữ liệu cũ 1', 1, 'ROLE_ADMIN', 'Quản trị', 'Chú thích vai trò quản trị', '550e8400-e29b-41d4-a716-446655440000'),
+('Dữ liệu cũ 2', 1, 'ROLE_USER', 'Người dùng', 'Chú thích vai trò người dùng', '550e8400-e29b-41d4-a716-446655440001'),
+('Dữ liệu cũ 3', 1, 'ROLE_GUEST', 'Khách', 'Chú thích vai trò khách', '550e8400-e29b-41d4-a716-446655440002');
 
+DELETE FROM RoleDetail;
+SHOW TABLES;
 -- Nhập dữ liệu vào bảng Role_Detail
 INSERT INTO Role_Detail (OldData, State, RoleDetailID, RoleID, SubCode, SubName, Action, ActionName, Value, TenantID)
 VALUES
-('Dữ liệu cũ 1', 1, 1, 1, 'SUB_VIEW', 'Xem', 'VIEW', 'Xem thông tin', TRUE, '550e8400-e29b-41d4-a716-446655440000'),
-('Dữ liệu cũ 2', 1, 2, 1, 'SUB_EDIT', 'Chỉnh sửa', 'EDIT', 'Chỉnh sửa thông tin', TRUE, '550e8400-e29b-41d4-a716-446655440001'),
-('Dữ liệu cũ 3', 1, 3, 2, 'SUB_DELETE', 'Xóa', 'DELETE', 'Xóa thông tin', FALSE, '550e8400-e29b-41d4-a716-446655440001');
+('Dữ liệu cũ 1', 1, 1, 1, 'OrganizationUnit', 'Đơn vị', 'View', 'Xem', FALSE, '550e8400-e29b-41d4-a716-446655440000'),
+('Dữ liệu cũ 1', 1, 2, 1, 'OrganizationUnit', 'Đơn vị', 'Add', 'Thêm', FALSE, '550e8400-e29b-41d4-a716-446655440000'),
+('Dữ liệu cũ 1', 1, 3, 1, 'OrganizationUnit', 'Đơn vị', 'Delete', 'Xóa', FALSE, '550e8400-e29b-41d4-a716-446655440000'),
+('Dữ liệu cũ 1', 1, 4, 1, 'OrganizationUnit', 'Đơn vị', 'Download', 'Tải xuống', FALSE, '550e8400-e29b-41d4-a716-446655440000'),
+('Dữ liệu cũ 1', 1, 5, 1, 'Personal', 'Cá nhân', 'View', 'Xem', FALSE, '550e8400-e29b-41d4-a716-446655440001'),
+('Dữ liệu cũ 1', 1, 6, 1, 'Personal', 'Cá nhân', 'Add', 'Thêm', FALSE, '550e8400-e29b-41d4-a716-446655440001'),
+('Dữ liệu cũ 1', 1, 7, 1, 'Personal', 'Cá nhân', 'Delete', 'Xóa', FALSE, '550e8400-e29b-41d4-a716-446655440001'),
+('Dữ liệu cũ 1', 1, 8, 1, 'Personal', 'Cá nhân', 'Edit', 'Sửa', FALSE, '550e8400-e29b-41d4-a716-446655440001'),
+('Dữ liệu cũ 1', 1, 9, 1, 'Shared', 'Chia sẻ', 'View', 'Xem', FALSE, '550e8400-e29b-41d4-a716-446655440002'),
+('Dữ liệu cũ 1', 1, 10, 1, 'Shared', 'Chia sẻ', 'Add', 'Thêm', FALSE, '550e8400-e29b-41d4-a716-446655440002'),
+('Dữ liệu cũ 1', 1, 11, 1, 'Shared', 'Chia sẻ', 'Delete', 'Xóa', FALSE, '550e8400-e29b-41d4-a716-446655440002'),
+('Dữ liệu cũ 1', 1, 12, 1, 'Shared', 'Chia sẻ', 'Edit', 'Sửa', FALSE, '550e8400-e29b-41d4-a716-446655440002'),
+('Dữ liệu cũ 1', 1, 13, 1, 'Employee', 'Thiết lập/Nhân viên', 'View', 'Xem', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 14, 1, 'Employee', 'Thiết lập/Nhân viên', 'Add', 'Thêm', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 15, 1, 'Employee', 'Thiết lập/Nhân viên', 'Delete', 'Xóa', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 16, 1, 'Employee', 'Thiết lập/Nhân viên', 'Edit', 'Sửa', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 17, 1, 'Unit', 'Thiết lập/Đơn vị', 'View', 'Xem', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 18, 1, 'Unit', 'Thiết lập/Đơn vị', 'Add', 'Thêm', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 19, 1, 'Unit', 'Thiết lập/Đơn vị', 'Delete', 'Xóa', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 20, 1, 'Unit', 'Thiết lập/Đơn vị', 'Edit', 'Sửa', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 21, 1, 'User', 'Thiết lập/Người dùng', 'View', 'Xem', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 22, 1, 'User', 'Thiết lập/Người dùng', 'Add', 'Thêm', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 23, 1, 'User', 'Thiết lập/Người dùng', 'Delete', 'Xóa', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 24, 1, 'User', 'Thiết lập/Người dùng', 'Edit', 'Sửa', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 25, 1, 'Role', 'Thiết lập/Vai trò', 'View', 'Xem', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 26, 1, 'Role', 'Thiết lập/Vai trò', 'Add', 'Thêm', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 27, 1, 'Role', 'Thiết lập/Vai trò', 'Delete', 'Xóa', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 28, 1, 'Role', 'Thiết lập/Vai trò', 'Edit', 'Sửa', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 29, 1, 'Email', 'Thiết lập/Email hệ thống', 'Edit', 'Sửa', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 30, 1, 'Email', 'Thiết lập/Email hệ thống', 'View', 'Xem', FALSE, '550e8400-e29b-41d4-a716-446655440003'),
+('Dữ liệu cũ 1', 1, 31, 1, 'Log', 'Thiết lập/Nhật ký hoạt động', 'View', 'Xem', FALSE, '550e8400-e29b-41d4-a716-446655440003');
+
+DROP TABLE RoleDetail;
 
 -- Nhập dữ liệu vào bảng FileInformation
 INSERT INTO FileInformation (FileInfomationID, FileName, Type, Size, Path, Content)

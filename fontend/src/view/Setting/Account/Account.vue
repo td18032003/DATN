@@ -78,7 +78,7 @@ export default {
         }
     },
     created(){
-        var check = this.$checkPermission.checkPermission("Account", "View", this);
+        var check = this.$checkPermission.checkPermission("User", "View", this);
         if(!check){
             this.$showToast.checkAvailability("error","Bạn không có quyền thực hiện chức năng này");
             this.$router.push("/home/Setting/Role");
@@ -102,7 +102,27 @@ export default {
                     me.dataSource = res.data.Data;
                 }
             });
-        }
+        },
+        openEdit(data){
+            this.activePopup = true;
+            this.$refs.AddAccount.setData(data);
+        },
+        openDetail(data){
+            this.$router.push({path: "/home/Setting/Account/Detail", query: {Id: data.Id}});
+        },
+        confirmDelete(data){
+            this.$showConfirm.showConfirm("Xóa tài khoản", "Bạn có chắc chắn muốn xóa tài khoản này không?", "Xóa", "Hủy", () => {
+                UserAPI.Delete(data.Id).then(res => {
+                    if(res.data && res.data.Success){
+                        this.$showToast.checkAvailability("success","Xóa tài khoản thành công");
+                        this.GetAllAccount();
+                    }
+                    else{
+                        this.$showToast.checkAvailability("error","Xóa tài khoản thất bại");
+                    }
+                });
+            });
+        },
     }
 }
 </script>

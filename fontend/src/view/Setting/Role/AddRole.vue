@@ -293,7 +293,12 @@ export default {
                             me.role.ListRole.forEach(roles => {
                                 roles.ListRoleDetail.forEach(role => {
                                     var item = listData.find(x => x.SubCode == roles.SubCode && x.Action == role.Action);
-                                    role.Value = item.Value;
+                                    if(item != null){
+                                        role.Value = item.Value;
+                                    }
+                                    else{
+                                        role.Value = false;
+                                    }
                                 })
                             })
                         }

@@ -20,7 +20,14 @@ namespace Upload.Implement
         public IDbConnection _dBConnection;
         public string _tableName = null;
         public IHttpContextAccessor _httpContextAccessor;
-        public Guid _tenantID;
+        public Guid _tenantID
+        {
+            get
+            {
+                var user = (User)_httpContextAccessor.HttpContext.Items["User"];
+                return user.TenantID;
+            }
+        }
 
         public BaseBL(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {

@@ -28,9 +28,9 @@ namespace Upload
 
         public string OrganizationUnitName { get; set; }
 
-        public int JobPoisionID { get; set; }
+        public int? JobPositionID { get; set; }
 
-        public string JobPoisitionName { get; set; }
+        public string JobPositionName { get; set; }
 
         public int Status { get; set; }
 

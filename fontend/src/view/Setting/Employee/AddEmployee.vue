@@ -87,7 +87,7 @@
                         Chức vụ
                     </cc-col>
                     <cc-col w="30">
-                        <cc-input v-model="employee.JobPoisitionName" ></cc-input>
+                        <cc-input v-model="employee.JobPositionName" ></cc-input>
                     </cc-col>
                 </cc-row>
                 <cc-row>
@@ -144,8 +144,8 @@ export default {
                 Address: null,
                 OrganizationUnitID: null,
                 OrganizationUnitName: null,
-                JobPoisitionID: null,
-                JobPoisitionName: null,
+                JobPositionID: null,
+                JobPositionName: null,
                 Status: 1
             },
             loading: false,

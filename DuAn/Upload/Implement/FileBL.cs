@@ -56,11 +56,11 @@ namespace Upload.Implement
             {
                 where = $" AND ParentID = {param["ParentID"]};";
             }
-            if (param.ContainsKey("OrganizationUnitID"))
+            if (param.ContainsKey("OrganizationUnitID") && param["OrganizationUnitID"] != null)
             {
                 where = where + $" AND OrganizationUnitID = {param["OrganizationUnitID"]}";
             }
-            string sql = $"SELECT * FROM file WHERE TenantID = '{param["TenantID"]}' AND CreatedBy = {param["EmployeeID"]}" + where + " Order By TypeFileEnum";
+            string sql = $"SELECT * FROM file WHERE TenantID = '{_tenantID}' AND CreatedBy = {param["EmployeeID"]}" + where + " Order By TypeFileEnum";
             return await QueryAsync<Models.File>(sql);
         }
         /// <summary>
